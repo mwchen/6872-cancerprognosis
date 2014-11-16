@@ -9,10 +9,19 @@ def index(request):
 
 	return render_to_response('progApp/index.html', context)
 
-def doctorView(request):
+def lookup(request):
 	# Obtain the context from the HTTP request.
 	context = RequestContext(request)
 	return HttpResponse("REACHED")
+    #return render_to_response('progApp/lookup.html', context)
+
+def updatePatient(request):
+    # Obtain the context from the HTTP request.
+    context = RequestContext(request)
+        
+        return render_to_response('progApp/updatePatient.html', context)
+
+#def doctorView(request):
 	#return render_to_response('doctorView.html', context)
 
 #determines if the person can make the change to the database
@@ -125,8 +134,3 @@ def getCancerProg(request):
 			
 			
 			
-			
-			
-			
-		
-		
