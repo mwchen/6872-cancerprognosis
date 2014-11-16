@@ -1,11 +1,10 @@
 from django.conf.urls import patterns, include, url
-from django.contrib import admin
 from progApp import views
 
-urlpatterns = patterns('',
+urlpatterns = patterns('progApp.views',
     # Examples:
     # url(r'^$', 'cancerPrognosis.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    #url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include('progApp.urls')),
+    url(r'^$', 'index', name='index'),
+ 	url(r'^doctorView/$', 'doctorView', name='doctorView'),
 )
