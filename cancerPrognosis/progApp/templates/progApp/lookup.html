@@ -2,10 +2,27 @@
 <html>
     <head>
         <title>Cancer Prognosis</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'progApp/lookup.css' %}" />
     </head>
 
     <body>
         <h1>Doctor's View</h1>
+        <form id="look_up_form" method="post" action="/progApp/lookup/">
+
+            {% csrf_token %}
+            <ul>
+	            {% for field in form.visible_fields %}
+	            <li>
+	                {{ field.errors }}
+	                {{ field.help_text }}
+	                {{ field }}
+	            </li>
+	            {% endfor %}
+        	</ul>
+
+            <input type="submit" name="submit" value="Look Up Information" />
+        </form>
 
         <a href="..">Home</a>
     </body>
