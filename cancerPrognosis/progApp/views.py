@@ -13,3 +13,9 @@ def lookup(request):
 	context = RequestContext(request)
 
 	return render_to_response('progApp/lookup.html', context)
+
+def updatePatient(request):
+	# Obtain the context from the HTTP request.
+	context = RequestContext(request)
+
+	return render_to_response('progApp/updatePatient.html', context)
