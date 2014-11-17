@@ -136,7 +136,9 @@ def getCancerProg(request):
 
 # Response page after submitting the form.
 def results(request):
-	return HttpResponse("Thanks for submitting the form!")
+	context = RequestContext(request)
+
+	return render_to_response('progApp/results.html', context)
 
 # Doctors update the model with the information regarding the patient.
 def updatePatient(request):

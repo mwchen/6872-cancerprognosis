@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Cancer Prognosis</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'progApp/general.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+    </head>
+
+    <body>
+    	<nav class="navbar navbar-default" role="navigation">
+		  	<div class="container-fluid">
+		  		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      				<ul class="nav navbar-nav">
+      				<li><a class="navbar-brand glyphicon glyphicon-home" aria-hidden="true" href="..">Home</a></li>
+					<li><a href="lookup/">Look Up Information</a> <br></li>
+	        		<li><a href="updatePatient/">Update Patient</a></li>
+	        		</ul>
+				</div>
+			</div>
+		</nav>
+
+    	<div id="main" class="container" role="main">
+        	<h1>Results!!</h1>
+	    </div>
+
+        <!-- Load scripts if necessary-->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	    <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>
