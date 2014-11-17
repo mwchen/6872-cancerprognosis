@@ -4,6 +4,7 @@ from django.template import RequestContext, loader
 from progApp.forms import LookUpForm
 from models import *
 
+
 def index(request):
 	# Obtain the context from the HTTP request.
 	context = RequestContext(request)
