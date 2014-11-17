@@ -1,29 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Cancer Prognosis</title>
-        {% load staticfiles %}
-        <link rel="stylesheet" type="text/css" href="{% static 'progApp/lookup.css' %}" />
-    </head>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Cancer Prognosis</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static 'progApp/lookup.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'progApp/general.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+	</head>
 
-    <body>
-        <h1>Doctor's View</h1>
-        <form id="look_up_form" method="post" action="/progApp/lookup/">
+	<body>
+		<!-- Nav bar -->
+    	<nav class="navbar navbar-default" role="navigation">
+		  	<div class="container-fluid">
+		  		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      				<ul class="nav navbar-nav">
+      				<li><a class="navbar-brand glyphicon glyphicon-home" aria-hidden="true" href="..">Home</a></li>
+					<li><a href="lookup/">Look Up Information</a> <br></li>
+	        		<li><a href="updatePatient/">Update Patient</a></li>
+	        		</ul>
+				</div>
+			</div>
+		</nav>
 
-            {% csrf_token %}
-            <ul>
-	            {% for field in form.visible_fields %}
-	            <li>
-	                {{ field.errors }}
-	                {{ field.help_text }}
-	                {{ field }}
-	            </li>
-	            {% endfor %}
-        	</ul>
+		<div id="main" class="container" role="main">
+			<h1>Look up information</h1>
+			<form id="look_up_form" method="post" action="/progApp/lookup/">
 
-            <input type="submit" name="submit" value="Look Up Information" />
-        </form>
+				{% csrf_token %}
+				<table>
+					{{form.as_table}}
+				</table>
+				<!-- <ul>
+					{% for field in form.visible_fields %}
+					<li>
+					{{ field.errors }}
+					{{ field.help_text }}
+					{{ field }}
+					</li>
+					{% endfor %}
+				</ul> -->
+				<br>
 
-        <a href="..">Home</a>
-    </body>
+				<input type="submit" name="submit" value="Look Up Information" />
+			</form>
+		</div>
+
+		<!-- Load scripts if necessary-->
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+	</body>
 </html>
