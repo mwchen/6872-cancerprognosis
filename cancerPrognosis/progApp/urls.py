@@ -9,4 +9,5 @@ urlpatterns = patterns('progApp.views',
     url(r'^lookup/results.html', 'results', name='results'),
     url(r'^updatePatient/$', 'updatePatient', name='updatePatient'),
     url(r'^$', 'index', name='index'),
+    url(r'^lookup/getCancerProg' ,views.getCancerProg, name = 'getCancerProg'),
 )

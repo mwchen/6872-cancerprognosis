@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 from progApp.forms import LookUpForm
 from models import *
-
+import json
 
 def index(request):
 	# Obtain the context from the HTTP request.
@@ -111,8 +111,22 @@ def logCancerData(request):
 			return HttpResponse("bad request", status = 500)
 	else:
 		return HttpResponse("unauthorized change", status = 500)
-'''
+
 def getCancerProg(request):
+	try:
+		#cancer = Cancer.objects.get(type = request.GET('cancer'))
+
+		response = {'cancer':'Breast Cancer', 'stage':1, 'gender':'Female', 'age':32,
+			'1year':0.9, '2year':0.8, '3year':0.75, '4year':0.7, '5year':0.65, 'treatments':
+			[{'name':'Lumpectomy:', 'cost':900, 'quality_of_life':2, '1year':0.95, '2year':0.85, '3year':0.80, '4year':0.75, '5year':0.70},
+			 	{'name':'Mastectomy', 'cost':1200, 'quality_of_life':2, '1year':0.98, '2year':0.88, '3year':0.86, '4year':0.79, '5year':0.75}]}
+		json_response = json.dumps(response)
+		return HttpResponse(json_response, content_type='application/json')
+	except:
+		return HttpResponse("bad request", status = 500)
+	
+
+'''
 	try:
 		cancer = Cancer.objects.get(type = request.GET('cancer'))
 		gender = request.GET('gender')
@@ -122,18 +136,11 @@ def getCancerProg(request):
 			stage = Stage.objects.get(name = request.Post('stage'), cancer = cancer)
 		else:
 			stage = None
-		if request.GET('treatment') != 'None':
-			treatment = Treatment.objects.get(name = request.Post('treatment'), cancer = cancer)
-		else:
-			treatment = None
 		cancer_type_data = CancerData.objects.filter(cancer = cancer)
 		related_data = {}
 		for data in cancer_type_data
 		related data = [x where ctd['age']/20 = age_class and 
-		
-		
-			
-		'''	
+	'''	
 
 # Response page after submitting the form.
 def results(request):
