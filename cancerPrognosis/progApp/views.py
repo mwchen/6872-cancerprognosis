@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
-from progApp.forms import LookUpForm
 from models import *
+from progApp.forms import LookUpForm
 import json
 
 def index(request):
@@ -11,7 +11,7 @@ def index(request):
 
 	return render_to_response('progApp/index.html', context)
 
-# Doctors can look up information regarding 
+# Doctors can look up information regarding a patient.
 def lookup(request):
 	# Obtain the context from the HTTP request.
 	context = RequestContext(request)
@@ -21,16 +21,21 @@ def lookup(request):
 		form = LookUpForm(request.POST)
 
 		# Have we been provided with a valid form?
-		if form.is_valid():
-			# Save the new category to the database.
-			form.save(commit=True)
+		# Would normally check this but this doesn't make sense because we are prepopulating.
+		# #if form.is_valid():
+		# 	## Save the new category to the database.
+		# 	#form.save(commit=True)
+		# 	getCancerProg(request)
 
-			# Now call the index() view.
-			# The user will be shown the homepage.
-			return results(request)
-		else:
-			# The supplied form contained errors - just print them to the terminal.
-			print form.errors
+		# 	# Now call the index() view.
+		# 	# The user will be shown the homepage.
+		# 	return results(request)
+		# else:
+		# 	# The supplied form contained errors - just print them to the terminal.
+		# 	print form.errors
+		json_data = getCancerProg(request)
+		#return results(request, json_response)
+		return render_to_response('progApp/results.html', {'json_data': json_data})
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = LookUpForm()
@@ -112,16 +117,18 @@ def logCancerData(request):
 	else:
 		return HttpResponse("unauthorized change", status = 500)
 
+# Returns a JSON of the results based on the information filled up from the form.
 def getCancerProg(request):
 	try:
 		#cancer = Cancer.objects.get(type = request.GET('cancer'))
 
 		response = {'cancer':'Breast Cancer', 'stage':1, 'gender':'Female', 'age':32,
 			'1year':0.9, '2year':0.8, '3year':0.75, '4year':0.7, '5year':0.65, 'treatments':
-			[{'name':'Lumpectomy:', 'cost':900, 'quality_of_life':2, '1year':0.95, '2year':0.85, '3year':0.80, '4year':0.75, '5year':0.70},
+			[{'name':'Lumpectomy', 'cost':900, 'quality_of_life':2, '1year':0.95, '2year':0.85, '3year':0.80, '4year':0.75, '5year':0.70},
 			 	{'name':'Mastectomy', 'cost':1200, 'quality_of_life':2, '1year':0.98, '2year':0.88, '3year':0.86, '4year':0.79, '5year':0.75}]}
 		json_response = json.dumps(response)
-		return HttpResponse(json_response, content_type='application/json')
+		return json_response
+		#return HttpResponse(json_response, content_type='application/json')
 	except:
 		return HttpResponse("bad request", status = 500)
 	
@@ -143,7 +150,7 @@ def getCancerProg(request):
 	'''	
 
 # Response page after submitting the form.
-def results(request):
+def results(request, json_response):
 	context = RequestContext(request)
 	# Make sure to check that something has been entered.
 	
