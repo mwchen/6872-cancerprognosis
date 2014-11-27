@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    document.getElementById('results-container').style.display = 'none';
+});
+
 $('#look-up-form').on('submit', function(event) {
 	event.preventDefault();
 	look_up();
@@ -17,6 +21,7 @@ function look_up() {
             //$('#look-up-form').val(''); // remove the value from the input
             console.log(json); // log the returned json to the console
             console.log("success"); // another sanity check
+            document.getElementById('results-container').style.display = 'block';
             update_fields(json);
         },
 
