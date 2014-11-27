@@ -129,7 +129,7 @@ def convertYears(x,dic):
 			dic[v] += 1
 				
 def getCancerProg(request):
-	if True:
+	try:
 		cancer = Cancer.objects.get(id = request.POST['cancer'])
 		if 'age' in request.POST:
 			pre_age = request.POST['age']
@@ -203,7 +203,7 @@ def getCancerProg(request):
 			json_response = json.dumps(response)
 			'''
 			return HttpResponse(json_response, content_type='application/json')
-	else:
+	except:
 		return HttpResponse("bad request", status = 500)
 
 def getDetails(request):
