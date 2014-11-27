@@ -1,9 +1,10 @@
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render_to_response
-from django.template import RequestContext, loader
+from django.template import Context, loader, RequestContext
+from django.views.decorators.csrf import csrf_exempt
+import json
 from models import *
 from progApp.forms import LookUpForm
-import json
 
 def index(request):
 	# Obtain the context from the HTTP request.
@@ -12,13 +13,14 @@ def index(request):
 	return render_to_response('progApp/index.html', context)
 
 # Doctors can look up information regarding a patient.
+@csrf_exempt
 def lookup(request):
 	# Obtain the context from the HTTP request.
 	context = RequestContext(request)
 
 	# Check to see if it is an HTTP POST.
 	if request.method == 'POST':
-		form = LookUpForm(request.POST)
+		#form = LookUpForm(request.POST)
 
 		# Have we been provided with a valid form?
 		# Would normally check this but this doesn't make sense because we are prepopulating.
@@ -33,9 +35,8 @@ def lookup(request):
 		# else:
 		# 	# The supplied form contained errors - just print them to the terminal.
 		# 	print form.errors
-		json_data = getCancerProg(request)
-		#return results(request, json_response)
-		return render_to_response('progApp/results.html', {'json_data': json_data})
+		#json_data = getCancerProg(request)
+		return getCancerProg(request)
 	else:
 		# If the request was not a POST, display the form to enter details.
 		form = LookUpForm()
@@ -203,8 +204,8 @@ def getCancerProg(request):
 			json_response = json.dumps(response)
 			'''
 			return HttpResponse(json_response, content_type='application/json')
-	except:
-		return HttpResponse("bad request", status = 500)
+	except Exception as e:
+		return HttpResponse("bad request %s (%s)" % (e.message, type(e)), status = 500)
 
 def getDetails(request):
 	try:

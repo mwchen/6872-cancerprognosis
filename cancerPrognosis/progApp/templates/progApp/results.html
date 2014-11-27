@@ -9,29 +9,30 @@
     </head>
 
     <body>
-    	<nav class="navbar navbar-default" role="navigation">
-		  	<div class="container-fluid">
-		  		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      				<ul class="nav navbar-nav">
-      				<li><a class="navbar-brand glyphicon glyphicon-home" aria-hidden="true" href="..">Home</a></li>
-					<li><a href="lookup/">Look Up Information</a> <br></li>
-	        		<li><a href="updatePatient/">Update Patient</a></li>
-	        		</ul>
-				</div>
-			</div>
-		</nav>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                    <li><a class="navbar-brand glyphicon glyphicon-home" aria-hidden="true" href=".."></a></li>
+                    <li><a href="/lookup/">Look Up Information</a> </li>
+                    <li><a href="/updatePatient/">Update Patient</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-    	<div id="main" class="container" role="main">
+        <div id="main" class="container" role="main">
 
-        	<h1>Result for Patient</h1>
+            <h1>Result for Patient</h1>
+            <h2> Patient information </h2>
             <div class="row main-text" id="cancer"> Cancer: </div>
             <div class="row main-text" id="stage"> Stage: </div>
             <div class="row main-text" id="age"> Age: </div>
             <div class="row main-text" id="gender"> Gender: </div>
-            <div class="row main-text" id="survivalRate"> Survival Rate: <!-- Insert what the survival rate for patient -->
-            </div>
+            <div class="row main-text" id="survivalRate"> Survival Rate: </div>
 
             <div class="treatment-group" id="treatments">
+                <h2> Treatment Options </h2>
             </div>
 
             <br>
@@ -40,25 +41,17 @@
             <button type="button" class="btn btn-default"> Print for Patient </button>
             <button type="button" class="btn btn-default"> Print for Reference </button>
 
-	    </div>
+        </div>
 
         <!-- Load scripts if necessary-->
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	    <!-- Include all compiled plugins (below), or include individual files as needed -->
-	    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
-
-        <script src="{% static "js/progApp-ajax.js" %}" type="text/javascript">
-            var json = {{json_data|safe}};
-            console.log(json);
-            $(document).ready(function() {
-                updateFields(json);
-                alert(json);
-            })
-        </script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 
         <script type="text/javascript">
-            var result = {{json_data|safe}};
+            console.log(json_data);
+            var result = JSON.stringify(json_data);
 
             $.each(result, function(key, value) {
                 // If the key is a treatment, we want to populate the treatment.
