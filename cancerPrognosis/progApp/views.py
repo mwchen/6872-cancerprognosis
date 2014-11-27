@@ -207,7 +207,7 @@ def getDetails(request):
 		response = {'cancer_description':cancer.description, 'stage_description':stage.description, 
 			'treatments':treatment_list}
 		json_response = json.dumps(resposne)
-		return HttpResponse(jsoin_response, content_type = 'application/json')
+		return HttpResponse(json_response, content_type = 'application/json')
 	except:
 		return HttpResponse("bad request", status = 500)
 
