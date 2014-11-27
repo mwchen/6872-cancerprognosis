@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 # Create your tests here.
-'''
 from views import *
+'''
 gm = Gender()
 gm.name = 'Male'
 gm.save()
@@ -69,11 +69,24 @@ all_cancers = ['Lip', 'Skin Melanoma', 'Tounge', 'Breast', 'Oral Cavity', 'Cervi
 	'Esophagus', 'Penis', 'Stomach', 'Urinary Bladder', 'Small Intestine', 'Kidney', 'Colon Rectum', 'Brian', 'Colon', 'Thyroid',
 	'Rectum', 'Plasma cell', 'Liver', "Hodgkin's lymphoma", 'Gallbladder', "Non Hodgkin lymphoma", 'Pnacrease', 'SBLL/CLL', 
 	'Nasal cavaties and sinuses', 'LL/ALL', 'Larynx', 'AML', 'Lung', 'MPN', 'Pleura', 'CML', 'Bones and cartilages', 'MDS']
-survive = [3570+162+156+134+87,162,156,134,87,3570]
 putCancers(all_cancers)
 
+survive = [20393,835,931,873,692,487]
 putData('Breast', 50, 'Female', 'Unknown', '1', survive)
-'''
+survive = [47859,2878, 2785, 2379, 1785, 1270]
+putData('Breast', 50, 'Female', 'Unknown', '1', survive)
+survive = [43465,2135,2122,1994,1593,1137]
+putData('Breast', 50, 'Female', 'Unknown', '1', survive)
+survive = [25389,1146, 1185, 1130, 946, 684]
+putData('Breast', 50, 'Female', 'Unknown', '1', survive)
+survive = [14343,2030, 1828, 1385, 929, 651]
+putData('Breast', 50, 'Female', 'Unknown', '1', survive)
+
+
+
+#data entered:  female breast 50
+
+''' 
 
 class Req():
 	POST = {}

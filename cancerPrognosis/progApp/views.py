@@ -129,14 +129,14 @@ def convertYears(x,dic):
 			dic[v] += 1
 				
 def getCancerProg(request):
-	try:
-		cancer = Cancer.objects.get(type = request.POST['cancer'])
+	if True:
+		cancer = Cancer.objects.get(id = request.POST['cancer'])
 		if 'age' in request.POST:
 			pre_age = request.POST['age']
 		else:
 			pre_age = None
 		pre_stage = str(request.POST['stage'])
-		gender = Gender.objects.get(name = request.POST['gender'])
+		gender = Gender.objects.get(id = request.POST['gender'])
 		stage = Stage.objects.get(cancer = cancer, name = pre_stage)
 		if pre_age != None:	
 			age = pre_age
@@ -144,18 +144,22 @@ def getCancerProg(request):
 			age = -1
 			
 		try:
-			fast = quickCancerLookup.objects.get(name = cancer.type +'-'+str(age)+'-'+gender.name)
-			return HttpResponse(json_response, content_type='application/json')
+			fast = quickCancerLookup.objects.get(name = cancer.type +'-'+str(age)+'-'+gender.name + '-' + str(stage.name))
+			return HttpResponse(fast.data, content_type='application/json')
 		except:
 			cancerdata = CancerData.objects.filter(cancer = cancer)
-			print cancerdata
+			if len(cancerdata) < 100:
+				json_response = json.dumps({'cancer':cancer.type, 'stage':stage.name, 'gender':gender.name, 'age':age,
+				'1year':1, '2year':1, '3year':1, '4year':1, '5year':0.1, 'treatments': 
+					[{'name':'Unkown:', 'cost':100, 'quality_of_life':2, '1year':1, '2year':1, '3year':1, '4year':1, '5year':1}]})
+				return HttpResponse(json_response, content_type='application/json')
 			treatments = Treatment.objects.filter(cancer = cancer)
 			counting_dic = {'total': {0:.0001, 1:.0001, 2:.0001, 3:.0001, 4:.0001, 5:.0001}}
 			for t in treatments:
 				counting_dic[t.name] = {1:.0001, 2:.0001, 3:.0001, 4:.0001, 5:.0001, 0:.0001}
 		
 			for cd in cancerdata:
-				if age == -1 or (cd.age <= (age + 10) and cd.age >= (age -10)):
+				if age == -1 or (cd.age <= (age + 20) and cd.age >= (age -20)):
 					if  gender.name == 'Unknown' or cd.gender == gender:
 						if cd.stage == stage:
 							convertYears(cd.years_lived, counting_dic['total'])
@@ -180,8 +184,14 @@ def getCancerProg(request):
 				response['treatments'].append(new_treatment_dic)
 		
 			json_response = json.dumps(response)
+			try:
+				fast = quickCancerLookup.objects.filter(name = cancer.type +'-'+str(age)+'-'+gender.name+'-' + str(stage.name))
+				fast.delete()
+			except:
+				pass
+					
 			fast = quickCancerLookup()
-			fast.name = cancer.type +'-'+str(age)+'-'+gender.name
+			fast.name = cancer.type +'-'+str(age)+'-'+gender.name + '-' + str(stage.name)
 			fast.data = json_response
 			fast.cancer = cancer
 			fast.save()
@@ -193,7 +203,7 @@ def getCancerProg(request):
 			json_response = json.dumps(response)
 			'''
 			return HttpResponse(json_response, content_type='application/json')
-	except:
+	else:
 		return HttpResponse("bad request", status = 500)
 
 def getDetails(request):
