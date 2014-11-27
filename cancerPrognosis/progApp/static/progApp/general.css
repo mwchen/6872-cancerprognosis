@@ -1,3 +1,28 @@
 .navbar {
     margin-bottom: 0;
+    text-align: center;
+    float: none;
 }
+
+.navbar-brand {
+	margin: auto;
+}
+
+.nav-center {
+	float: none;
+}
+
+.navbar .nav > li {
+	float:none;
+	display:inline-block;
+	vertical-align:top;
+}
+
+.container-fluid{
+	background-color: #ACF0F2;
+	background-image: none;
+}
+
+/*.container {
+	background-color: #ACF0F2;
+}*/
