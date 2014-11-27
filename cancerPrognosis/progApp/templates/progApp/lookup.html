@@ -29,24 +29,17 @@
                     <h1>Look up information</h1>
                     <form id="look-up-form" method="post" action='/lookup/'>
                         {% csrf_token %}
-                        <table>
-                            {{form.as_table}}
-                        </table>
 
-                        <!-- Option to render results manually.
-                            https://docs.djangoproject.com/en/dev/topics/forms/ 
-                            <ul>
-                            {% for field in form.visible_fields %}
-                            <li>
-                            {{ field.errors }}
-                            {{ field.help_text }}
-                            {{ field }}
-                            </li>
-                            {% endfor %}
-                        </ul> -->
+                        {% for field in form %}
+                            <div class="field-wrapper row top10">
+                                <div class="field-label col-md-2"> {{ field.label}}:</div>
+                                <div class="field col-md-4"> {{ field }} </div>
+                                <br>
+                            </div>
+                        {% endfor %}
                         <br>
 
-                        <input type="submit" class="btn btn-default" name="submit" value="Look Up Information"/>
+                        <input type="submit" class="btn btn-primary" name="submit" value="Look Up Information"/>
                     </form>
                 </div>
                 <div id="results-container" class="col-md-6">
@@ -65,8 +58,8 @@
                     <br>
                     <br>
 
-                    <button type="button" class="btn btn-default"> Print for Patient </button>
-                    <button type="button" class="btn btn-default"> Print for Reference </button>
+                    <button type="button" class="btn btn-primary"> Print for Patient </button>
+                    <button type="button" class="btn btn-primary"> Print for Reference </button>
                 </div>
                 <div id="error"> </div>
             </div>
