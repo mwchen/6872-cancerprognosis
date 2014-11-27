@@ -6,7 +6,7 @@ class Cancer(models.Model):
 	
 	def __str__(self):
 		return self.type
-	
+
 class Treatment(models.Model):
 	cancer = models.ForeignKey(Cancer)
 	name = models.CharField(max_length = 100)
@@ -48,8 +48,12 @@ class LookUpData(models.Model):
 	
 class quickCancerLookup(models.Model):
 	name = models.CharField(max_length = 1000)
+	cancer = models.ForeignKey(Cancer, null = True, blank = True)
 	data = models.CharField(max_length = 1000)
 
 class trustedDoctors(models.Model):
 	pin = models.CharField(max_length = 500)
 	name = models.CharField(max_length = 500)
+
+
+	
