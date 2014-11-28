@@ -13,8 +13,9 @@ function look_up() {
 	$.ajax({
         url : "../lookup/", // the endpoint
         type : "POST", // http method
-        data: { csrfmiddlewaretoken: "{{ csrf_token }}"},
-        //data : { lookup : $('#look-up-form').val() }, // data sent with the post request
+        data: { csrfmiddlewaretoken: "{{ csrf_token }}", 'stage':$('#id_stage').val(), 'gender':$('#id_gender').val(), 
+        	'age':$('#id_age').val(), 'cancer':$('#id_cancer').val()},
+       // data : { lookup : $('#look-up-form').val() }, // data sent with the post request
 
         // handle a successful response
         success : function(json) {
@@ -57,7 +58,19 @@ function update_fields(result) {
 
                 // Add treatment quality of life.
                 var treatmentQOL = document.createElement('div');
-                treatmentQOL.innerHTML="Quality of Life: " + currentTreatment['quality_of_life'];
+                if( currentTreatment['quality_of_life'] == 2){
+                
+                treatmentQOL.innerHTML="Quality of Life: " +  '<i class="fa fa-smile-o"></i>';
+                }
+                if( currentTreatment['quality_of_life'] == 1){
+                
+                treatmentQOL.innerHTML="Quality of Life: " +  '<i class="fa fa-meh-o"></i>';
+                }
+                if( currentTreatment['quality_of_life'] == 0){
+                
+                treatmentQOL.innerHTML="Quality of Life: " +  '<i class="fa fa-frown-o"></i>';
+                }
+                
                 treatmentQOL.className = "treatment-quality-of-life col-md-3";
 
                 treatmentDiv.appendChild(treatmentName);
