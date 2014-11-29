@@ -35,7 +35,7 @@
                         {% for field in form %}
                             <div class="field-wrapper row top10">
                                 <div class="field-label col-md-2"> {{ field.label}}:</div>
-                                <div class="field col-md-4"> {{ field }} </div>
+                                <div class="field col-md-3"> {{ field }} </div>
                                 <br>
                             </div>
                         {% endfor %}
@@ -46,7 +46,7 @@
                         </div>
                     </form>
                 </div>
-                <div id="results-container" class="col-md-7">
+                <div id="results-container" class="col-md-6 col-md-offset-1">
                     <h1>Result for Patient</h1>
                     <h2> Patient information </h2>
                     <div class="row main-text" id="cancer"> <div class="field-heading"> Cancer: </div> </div>
@@ -61,9 +61,10 @@
 
                     <br>
                     <br>
-
-                    <button type="button" class="btn btn-primary"> Print for Patient </button>
-                    <button type="button" class="btn btn-primary"> Print for Reference </button>
+                    <div id="print-buttons-container">
+                        <button type="button" class="btn btn-primary"> Print for Patient </button>
+                        <button type="button" class="btn btn-primary"> Print for Reference </button>
+                    </div>
                 </div>
                 <div id="error"> </div>
             </div>

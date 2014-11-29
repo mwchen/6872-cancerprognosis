@@ -48,27 +48,28 @@ function update_fields(result) {
 
                 // Add treatment name.
                 var treatmentName = document.createElement('div');
-                treatmentName.innerHTML="Treatment: " + currentTreatment['name'];
+                treatmentName.innerHTML="<div class='field-heading'> Treatment: </div>" + currentTreatment['name'];
                 treatmentName.className = "treatment-name col-md-3";
 
                 // Add treatment cost.
                 var treatmentCost = document.createElement('div');
-                treatmentCost.innerHTML="Cost: " + currentTreatment['cost'];
+                treatmentCost.innerHTML="<div class='field-heading'> Cost: </div>" + currentTreatment['cost'];
                 treatmentCost.className = "treatment-cost col-md-3";
 
                 // Add treatment quality of life.
                 var treatmentQOL = document.createElement('div');
+                treatmentQOL.innerHTML = "<div class='field-heading'> Quality of Life: </div>";
                 if( currentTreatment['quality_of_life'] == 2){
                 
-                treatmentQOL.innerHTML="Quality of Life: " +  '<i class="fa fa-smile-o"></i>';
+                treatmentQOL.innerHTML += '<i class="fa fa-smile-o fa-2x"></i>';
                 }
                 if( currentTreatment['quality_of_life'] == 1){
                 
-                treatmentQOL.innerHTML="Quality of Life: " +  '<i class="fa fa-meh-o"></i>';
+                treatmentQOL.innerHTML += '<i class="fa fa-meh-o fa-2x"></i>';
                 }
                 if( currentTreatment['quality_of_life'] == 0){
                 
-                treatmentQOL.innerHTML="Quality of Life: " +  '<i class="fa fa-frown-o"></i>';
+                treatmentQOL.innerHTML += '<i class="fa fa-frown-o fa-2x"></i>';
                 }
                 
                 treatmentQOL.className = "treatment-quality-of-life col-md-3";
@@ -83,12 +84,10 @@ function update_fields(result) {
         // If it is another field (not a treatment), fill it in accordingly.
         else if (document.getElementById(key) != null) {
             var child = document.getElementById(key);
-            console.log(child.childNodes.length);
             if (child.childNodes.length > 3) {
                 child.removeChild(child.lastChild);
             }
             child.innerHTML += "<div class='field-text'>" + value + "</div>";
-            //child.innerHTML += "<div class='field-text'>" + value + "</div>";
         }
     });
 }

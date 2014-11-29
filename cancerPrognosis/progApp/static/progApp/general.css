@@ -1,3 +1,19 @@
+.btn-primary {
+	color:#FCFFF5;
+	background-color:#3E606F;
+	border-color:#193441;
+}
+
+.container-fluid {
+	background-color: #91AA9D;
+	background-image: none;
+}
+
+html, body {
+	background-color:#D1DBBD;
+	height: 100%;
+}
+
 .navbar {
     margin-bottom: 0;
     text-align: center;
@@ -20,11 +36,6 @@
 
 .navbar-default .navbar-nav > li > a {
   color: #FCFFF5;
-}
-
-.container-fluid{
-	background-color: #91AA9D;
-	background-image: none;
 }
 
 /* Use these as padding */

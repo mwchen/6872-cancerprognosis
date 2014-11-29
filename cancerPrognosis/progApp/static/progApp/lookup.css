@@ -7,17 +7,32 @@ ul {
 }
 
 #button-div {
-	/*text-align: center;*/
+	text-align: center;
 }
 
 .field-heading {
 	display:inline;
+	font-weight:bold;
 }
 
 .field-text {
 	display:inline;
 }
 
+#look-up-info-container {
+	background-color:#FCFFF5;
+	margin-top:3%;
+	padding: 3%;
+	padding-top:10px;
+}
+
+#print-buttons-container {
+	text-align: center;
+}
+
 #results-container {
-	border-left: 1px #333;
+	background-color:#FCFFF5;
+	margin-top:3%;
+	padding: 3%;
+	padding-top:10px;
 }
