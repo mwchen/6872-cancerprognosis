@@ -18,8 +18,12 @@
 	vertical-align:top;
 }
 
+.navbar-default .navbar-nav > li > a {
+  color: #FCFFF5;
+}
+
 .container-fluid{
-	background-color: #ACF0F2;
+	background-color: #91AA9D;
 	background-image: none;
 }
 

@@ -1,3 +1,23 @@
+h1 {
+	text-align:center;
+}
+
 ul {
 	list-style-type: none;
+}
+
+#button-div {
+	/*text-align: center;*/
+}
+
+.field-heading {
+	display:inline;
+}
+
+.field-text {
+	display:inline;
+}
+
+#results-container {
+	border-left: 1px #333;
 }
