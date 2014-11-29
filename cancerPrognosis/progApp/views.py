@@ -223,14 +223,6 @@ def getDetails(request):
 	except:
 		return HttpResponse("bad request", status = 500)
 
-
-# Response page after submitting the form.
-def results(request, json_response):
-	context = RequestContext(request)
-	# Make sure to check that something has been entered.
-	
-	return render_to_response('progApp/results.html', context)
-
 # Doctors update the model with the information regarding the patient.
 def updatePatient(request):
 	# Obtain the context from the HTTP request.
