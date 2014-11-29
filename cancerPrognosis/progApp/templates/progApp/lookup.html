@@ -6,29 +6,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Cancer Prognosis</title>
         {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'progApp/lookup.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'progApp/general.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+
     </head>
 
     <body>
         <!-- Nav bar -->
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-center">
                     <li><a class="navbar-brand glyphicon glyphicon-home" aria-hidden="true" href=".."></a></li>
-                    <li><a href="/lookup/">Look Up Information</a></li>
-                    <li><a href="/updatePatient/">Update Patient</a></li>
-                    </ul>
-                </div>
+                    <li><a href="lookup/">Look Up Information</a></li>
+                    <li><a href="updatePatient/">Update Patient</a></li>
+                        <!--<li><a href=".."> Login </a> </li>-->
+                </ul>
             </div>
         </nav>
 
         <div id="main" class="container" role="main">
             <div class="row">
                 <div id = "look-up-info-container" class="col-md-5" >
-                    <h1>Look up information</h1>
+                    <h1>Look Up Information</h1>
                     <form id="look-up-form" method="post" action='/lookup/getCancerProg/'>
                         {% csrf_token %}
 
@@ -41,17 +41,19 @@
                         {% endfor %}
                         <br>
 
-                        <input type="submit" class="btn btn-primary" name="submit" value="Search"/>
+                        <div id="button-div">
+                            <input type="submit" class="btn btn-primary" name="submit" value="Search"/>
+                        </div>
                     </form>
                 </div>
                 <div id="results-container" class="col-md-7">
                     <h1>Result for Patient</h1>
                     <h2> Patient information </h2>
-                    <div class="row main-text" id="cancer"> Cancer: </div>
-                    <div class="row main-text" id="stage"> Stage: </div>
-                    <div class="row main-text" id="age"> Age: </div>
-                    <div class="row main-text" id="gender"> Gender: </div>
-                    <div class="row main-text" id="survivalRate"> Survival Rate: </div>
+                    <div class="row main-text" id="cancer"> <div class="field-heading"> Cancer: </div> </div>
+                    <div class="row main-text" id="stage">  <div class="field-heading"> Stage: </div> </div>
+                    <div class="row main-text" id="age">  <div class="field-heading"> Age: </div> </div>
+                    <div class="row main-text" id="gender">  <div class="field-heading"> Gender: </div> </div>
+                    <div class="row main-text" id="survivalRate">  <div class="field-heading"> Survival Rate: </div> </div>
 
                     <div class="treatment-group" id="treatments">
                         <h2> Treatment Options </h2>

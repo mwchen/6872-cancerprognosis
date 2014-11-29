@@ -83,7 +83,12 @@ function update_fields(result) {
         // If it is another field (not a treatment), fill it in accordingly.
         else if (document.getElementById(key) != null) {
             var child = document.getElementById(key);
-            child.innerHTML += value;
+            console.log(child.childNodes.length);
+            if (child.childNodes.length > 3) {
+                child.removeChild(child.lastChild);
+            }
+            child.innerHTML += "<div class='field-text'>" + value + "</div>";
+            //child.innerHTML += "<div class='field-text'>" + value + "</div>";
         }
     });
 }
