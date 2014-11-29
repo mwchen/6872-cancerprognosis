@@ -5,13 +5,17 @@
 }
 
 .container-fluid {
-	background-color: #91AA9D;
+	background-color: #193441;
 	background-image: none;
 }
 
 html, body {
 	background-color:#D1DBBD;
 	height: 100%;
+}
+
+.jumbotron {
+	background-color:#FCFFF5;
 }
 
 .navbar {
@@ -32,6 +36,10 @@ html, body {
 	float:none;
 	display:inline-block;
 	vertical-align:top;
+}
+
+.navbar .nav > li a:hover {
+	color:#91AA9D;
 }
 
 .navbar-default .navbar-nav > li > a {

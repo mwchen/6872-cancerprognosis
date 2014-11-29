@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Cancer Prognosis</title>
         {% load staticfiles %}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'progApp/lookup.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'progApp/general.css' %}" />
@@ -27,7 +26,7 @@
 
         <div id="main" class="container" role="main">
             <div class="row">
-                <div id = "look-up-info-container" class="col-md-5" >
+                <div id = "look-up-info-container" class="col-md-5 container-tile" >
                     <h1>Look Up Information</h1>
                     <form id="look-up-form" method="post" action='/lookup/getCancerProg/'>
                         {% csrf_token %}
@@ -46,14 +45,14 @@
                         </div>
                     </form>
                 </div>
-                <div id="results-container" class="col-md-6 col-md-offset-1">
-                    <h1>Result for Patient</h1>
-                    <h2> Patient information </h2>
-                    <div class="row main-text" id="cancer"> <div class="field-heading"> Cancer: </div> </div>
-                    <div class="row main-text" id="stage">  <div class="field-heading"> Stage: </div> </div>
-                    <div class="row main-text" id="age">  <div class="field-heading"> Age: </div> </div>
-                    <div class="row main-text" id="gender">  <div class="field-heading"> Gender: </div> </div>
-                    <div class="row main-text" id="survivalRate">  <div class="field-heading"> Survival Rate: </div> </div>
+                <div id="results-container" class="col-md-6 col-md-offset-1 container-tile">
+                    <h1> Results </h1>
+                    <h2> Patient Information </h2>
+                    <div class="row main-text" id="cancer"> <div class="field-heading col-md-2"> Cancer: </div> </div>
+                    <div class="row main-text" id="stage">  <div class="field-heading col-md-2"> Stage: </div> </div>
+                    <div class="row main-text" id="age">  <div class="field-heading col-md-2"> Age: </div> </div>
+                    <div class="row main-text" id="gender">  <div class="field-heading col-md-2"> Gender: </div> </div>
+                    <div class="row" id="chart-area"> <canvas id="mainChart" class="col-md-6"> </canvas></div>
 
                     <div class="treatment-group" id="treatments">
                         <h2> Treatment Options </h2>
@@ -76,6 +75,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/chart.js" %}" type="text/javascript"></script>
         <script src="{% static "js/main.js" %}" type="text/javascript"></script>
         
     </body>

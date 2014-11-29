@@ -131,7 +131,6 @@ def convertYears(x,dic):
 				
 def getCancerProg(request):
 	try:
-		
 		cancer = Cancer.objects.get(id = request.POST['cancer'])
 		if 'age' in request.POST:
 			pre_age = request.POST['age']

@@ -39,7 +39,6 @@ function update_fields(result) {
     $.each(result, function(key, value) {
         // If the key is a treatment, we want to populate the treatment.
         if (key == "treatments") {
-
             var treatmentOptions = result[key];
             for (i=0; i < treatmentOptions.length; i++) {
                 var currentTreatment = treatmentOptions[i];
@@ -90,4 +89,23 @@ function update_fields(result) {
             child.innerHTML += "<div class='field-text'>" + value + "</div>";
         }
     });
+
+    // Add the years to create the main graph.
+    var data = { 
+        labels: ["1 year", "2 years", "3 years", "4 years", "5+ years"],
+        datasets: [
+            {
+                label:"expected",
+                fillColor: "#3E606F",
+                data:[result['1year'],result['2year'],result['3year'],result['4year'],result['5year']]
+            }
+        ]
+    };
+    create_chart("#mainChart", data);
+}
+
+// Create a chart at the expected location with a particular dataset.
+function create_chart(location, data) {
+    var ctx = $(location).get(0).getContext("2d");
+    var myNewChart = new Chart(ctx).Line(data);
 }

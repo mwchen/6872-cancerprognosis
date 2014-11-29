@@ -1,4 +1,4 @@
-h1 {
+h1, h2 {
 	text-align:center;
 }
 
@@ -10,7 +10,19 @@ ul {
 	text-align: center;
 }
 
-.field-heading {
+#chart-area { 
+	text-align: center;
+}
+
+.container-tile {
+	background-color:#FCFFF5;
+	border-radius: 15px;
+	margin-top:3%;
+	padding: 3%;
+	padding-top:10px;
+}
+
+.field-heading{
 	display:inline;
 	font-weight:bold;
 }
@@ -19,20 +31,6 @@ ul {
 	display:inline;
 }
 
-#look-up-info-container {
-	background-color:#FCFFF5;
-	margin-top:3%;
-	padding: 3%;
-	padding-top:10px;
-}
-
 #print-buttons-container {
 	text-align: center;
-}
-
-#results-container {
-	background-color:#FCFFF5;
-	margin-top:3%;
-	padding: 3%;
-	padding-top:10px;
 }
