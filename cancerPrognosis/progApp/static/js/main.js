@@ -70,13 +70,21 @@ function update_fields(result) {
                 
                 treatmentQOL.innerHTML += '<i class="fa fa-frown-o fa-2x"></i>';
                 }
-                
                 treatmentQOL.className = "treatment-quality-of-life col-md-3";
+
+                // Add graph for treatment.
+                var treatmentData = get_data(currentTreatment);
+                var canvas = document.createElement('canvas');
+                canvas.className = "col-md-3";
+                canvas.setAttribute("id", "treatment-chart-" + i);
 
                 treatmentDiv.appendChild(treatmentName);
                 treatmentDiv.appendChild(treatmentCost);
                 treatmentDiv.appendChild(treatmentQOL);
+                treatmentDiv.appendChild(canvas);
+
                 document.getElementById('treatments').appendChild(treatmentDiv);
+                create_chart("#treatment-chart-"+i, treatmentData);
             }
         }
 
@@ -91,21 +99,27 @@ function update_fields(result) {
     });
 
     // Add the years to create the main graph.
+    data = get_data(result);
+    create_chart("#mainChart", data);
+}
+
+function get_data(input_array) {    
     var data = { 
         labels: ["1 year", "2 years", "3 years", "4 years", "5+ years"],
         datasets: [
             {
                 label:"expected",
                 fillColor: "#3E606F",
-                data:[result['1year'],result['2year'],result['3year'],result['4year'],result['5year']]
+                data:[input_array['1year'],input_array['2year'],input_array['3year'],input_array['4year'],input_array['5year']]
             }
         ]
     };
-    create_chart("#mainChart", data);
+    return data;
 }
 
 // Create a chart at the expected location with a particular dataset.
 function create_chart(location, data) {
     var ctx = $(location).get(0).getContext("2d");
+    console.log($(location).get(0).getContext("2d"));
     var myNewChart = new Chart(ctx).Line(data);
 }
