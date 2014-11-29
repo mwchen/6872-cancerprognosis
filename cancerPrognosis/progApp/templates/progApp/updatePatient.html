@@ -1,13 +1,57 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Cancer Prognosis App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Cancer Prognosis</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'progApp/general.css' %}" />
     </head>
 
     <body>
-        <h1>Update Patient information</h1>
+    	<nav class="navbar navbar-default" role="navigation">
+		  	<div class="container-fluid">
+                <ul class="nav navbar-nav nav-center">
+                    <!--Need to fix the logo.png
+                    <li><a class="navbar-brand" aria-hidden="true" href=".."><img src="{% static 'images/cpa_logo.png' %}"/></a></li> --> 
+                    <li><a class="navbar-brand glyphicon glyphicon-home" aria-hidden="true" href=".."></a></li>
+                    <li><a href="/lookup/">Look Up Information</a></li>
+                    <li><a href="/updatePatient/">Update Patient</a></li>
+                </ul>
+			</div>
+		</nav>
 
+		<div id="main" class="container" role="main">
+            <div class="row">
+                <div id = "enter-info-container" class="col-md-12 container-tile" >
+                    <h1>Update Database</h1>
+                    <!--<form id="update-form" method="post" action='/lookup/getCancerProg/'>
+                        {% csrf_token %}
 
-        <a href="..">Home</a>
+                        {% for field in form %}
+                            <div class="field-wrapper row top10">
+                                <div class="field-label col-md-2"> {{ field.label}}:</div>
+                                <div class="field col-md-3"> {{ field }} </div>
+                                <br>
+                            </div>
+                        {% endfor %}
+                        <br>
+
+                        <div id="button-div">
+                            <input type="submit" class="btn btn-primary" name="submit" value="Search"/>
+                        </div>
+                    </form>-->
+                </div>
+                
+                <div id="status"> </div>
+            </div>
+        </div>
+
+        <!-- Load scripts if necessary-->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	   <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
     </body>
 </html>

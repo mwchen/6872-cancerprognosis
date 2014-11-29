@@ -14,14 +14,6 @@ ul {
 	text-align: center;
 }
 
-.container-tile {
-	background-color:#FCFFF5;
-	border-radius: 15px;
-	margin-top:3%;
-	padding: 3%;
-	padding-top:10px;
-}
-
 .field-heading{
 	display:inline;
 	font-weight:bold;
