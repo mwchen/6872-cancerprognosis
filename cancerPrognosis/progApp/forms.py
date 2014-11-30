@@ -9,4 +9,9 @@ class LookUpForm(forms.ModelForm):
 	class Meta:
 		# Provide an association between the ModelForm and a model
 		model = LookUpData
+		exclude = []
 		
+class UpdateDataForm(forms.ModelForm):
+	class Meta:
+		model = CancerData
+		exclude = []

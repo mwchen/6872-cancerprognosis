@@ -4,6 +4,10 @@
 	border-color:#193441;
 }
 
+.btn-primary: hover {
+	background-color:#91AA9D;
+}
+
 .container-fluid {
 	background-color: #193441;
 	background-image: none;

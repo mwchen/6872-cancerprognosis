@@ -35,7 +35,7 @@ class Gender(models.Model):
 class CancerData(models.Model):
 	cancer = models.ForeignKey(Cancer)
 	treatment = models.ForeignKey(Treatment, null = True, blank = True)
-	stage = models.ForeignKey(Stage, null = True, blank = True)
+	stage = models.IntegerField(null = True, blank = True)
 	gender = models.ForeignKey(Gender, null = True, blank = True)
 	age = models.IntegerField(null = True, blank = True)
 	years_lived = models.IntegerField(default = 0)

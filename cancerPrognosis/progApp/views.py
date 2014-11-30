@@ -4,7 +4,7 @@ from django.template import Context, loader, RequestContext
 from django.views.decorators.csrf import csrf_exempt
 import json
 from models import *
-from progApp.forms import LookUpForm
+from progApp.forms import LookUpForm, UpdateDataForm
 
 def index(request):
 	# Obtain the context from the HTTP request.
@@ -99,7 +99,7 @@ def createStage(request):
 ### request POST: {'cancer': cancer type, 'treatment': treatment name or 'None', "gender" 0,1,2,  
 	### "age": age, "stage": stage name or 'None'}
 def logCancerData(request):
-	if authorizeChange(Request):
+	if authorizeChange(request):
 		try:
 			new_cancer_data = CancerData
 			cancer = Cancer.objects.get(type = request.Post('cancer'))
@@ -227,7 +227,13 @@ def updatePatient(request):
 	# Obtain the context from the HTTP request.
 	context = RequestContext(request)
 
-	return render_to_response('progApp/updatePatient.html', context)
+	# Check to see if it is an HTTP POST.
+	if request.method == 'POST':
+		return logCancerData(request)
+	else:
+		# If the request was not a POST, display the form to enter details.
+		form = UpdateDataForm()
+	return render_to_response('progApp/updatePatient.html', {'form': form}, context)
 	
 
 def putCancers(cancers):
