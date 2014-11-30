@@ -11,8 +11,8 @@ class Treatment(models.Model):
 	cancer = models.ForeignKey(Cancer)
 	name = models.CharField(max_length = 100)
 	description = models.CharField(max_length = 1000)
-	quality_of_life = models.IntegerField(null = True, blank = True)
-	cost = models.IntegerField(null = True, blank = True)
+	quality_of_life = models.PositiveIntegerField(null = True, blank = True)
+	cost = models.PositiveIntegerField(null = True, blank = True)
 	unique_together = (('cancer','name'),)
 	
 	def __str__(self):
@@ -20,7 +20,7 @@ class Treatment(models.Model):
 
 class Stage(models.Model):
 	cancer = models.ForeignKey(Cancer)
-	name = models.IntegerField()
+	name = models.PositiveIntegerField()
 	description = models.CharField(max_length = 1000)
 	unique_together = (('cancer','name'),)
 	
@@ -35,15 +35,15 @@ class Gender(models.Model):
 class CancerData(models.Model):
 	cancer = models.ForeignKey(Cancer)
 	treatment = models.ForeignKey(Treatment, null = True, blank = True)
-	stage = models.IntegerField(null = True, blank = True)
+	stage = models.PositiveIntegerField(null = True, blank = True)
 	gender = models.ForeignKey(Gender, null = True, blank = True)
-	age = models.IntegerField(null = True, blank = True)
-	years_lived = models.IntegerField(default = 0)
+	age = models.PositiveIntegerField(null = True, blank = True)
+	years_lived = models.PositiveIntegerField(default = 0)
 
 class LookUpData(models.Model):
 	cancer = models.ForeignKey(Cancer)
-	stage = models.IntegerField(null = True, blank = True)
-	age = models.IntegerField(null = True, blank = True)
+	stage = models.PositiveIntegerField(null = True, blank = True)
+	age = models.PositiveIntegerField(null = True, blank = True)
 	gender = models.ForeignKey(Gender, null = True, blank = True)
 	
 class quickCancerLookup(models.Model):
