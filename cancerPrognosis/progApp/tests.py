@@ -2,7 +2,7 @@ from django.test import TestCase
 
 # Create your tests here.
 from views import *
-'''
+
 gm = Gender()
 gm.name = 'Male'
 gm.save()
@@ -12,85 +12,67 @@ gf.save()
 gu = Gender()
 gu.name = 'Unknown'
 gu.save()
-breast = Cancer()
-breast.type = 'Breast Cancer'
-breast.description = 'cancer of the breast'
-breast.save()
-t = Treatment()
-t.cancer = breast
-t.name = 'No Treatment'
-t.description = 'No treatment'
-t.quality_of_life = 0
-t.cost = 0
-t.save()
-
-tt = Treatment()
-tt.cancer = breast
-tt.name = 'Mysectomy'
-tt.description = 'removal of breast'
-tt.quality_of_life = 3
-tt.cost = 10000
-tt.save()
-
-s = Stage()
-s.cancer = breast
-s.name = '1'
-s.description = 'first stage'
-s.save()
-
-cd = CancerData()
-cd.cancer = breast
-cd.treatment =tt
-cd.stage = s
-cd.gender = gf
-cd.age = 20
-cd.years_lived = 5
-cd.save()
-
-cd = CancerData()
-cd.cancer = breast
-cd.treatment =t
-cd.stage = s
-cd.gender = gf
-cd.age = 20
-cd.years_lived = 2
-cd.save()
-
-cd = CancerData()
-cd.cancer = breast
-cd.treatment =t
-cd.stage = s
-cd.gender = gf
-cd.age = 20
-cd.years_lived = 4
-cd.save()
 all_cancers = ['Lip', 'Skin Melanoma', 'Tounge', 'Breast', 'Oral Cavity', 'Cervix Uteri', 'Salivary Gland', 'Corpus Uteri',
 	'Oropharynx', 'Ovary', 'Nasopharynx', 'Vagina and vulva', 'Hypopharynx', 'Prostate', 'Head and Neck', 'Testis', 
-	'Esophagus', 'Penis', 'Stomach', 'Urinary Bladder', 'Small Intestine', 'Kidney', 'Colon Rectum', 'Brian', 'Colon', 'Thyroid',
-	'Rectum', 'Plasma cell', 'Liver', "Hodgkin's lymphoma", 'Gallbladder', "Non Hodgkin lymphoma", 'Pnacrease', 'SBLL/CLL', 
+	'Esophagus', 'Penis', 'Stomach', 'Urinary Bladder', 'Small Intestine', 'Kidney', 'Colon Rectum', 'Brain', 'Colon', 'Thyroid',
+	'Rectum', 'Plasma cell', 'Liver', "Hodgkin's lymphoma", 'Gallbladder', "Non Hodgkin lymphoma", 'Pancrease', 'SBLL/CLL', 
 	'Nasal cavaties and sinuses', 'LL/ALL', 'Larynx', 'AML', 'Lung', 'MPN', 'Pleura', 'CML', 'Bones and cartilages', 'MDS']
 putCancers(all_cancers)
+t = Treatment()
+t.cancer = Cancer.objects.get(type = 'Breast')
+t.name = 'Breast - Lumpectomy plus Radiation'
+t.cost = 20000
+t.quality_of_life = 2
+t.save()
+t = Treatment()
+t.cancer = Cancer.objects.get(type = 'Breast')
+t.name = 'Breast - Mastectomy plus Radiation'
+t.cost = 25000
+t.quality_of_life = 1
+t.save()
 
-survive = [20393,835,931,873,692,487]
-putData('Breast', 50, 'Female', 'Unknown', '1', survive)
-survive = [47859,2878, 2785, 2379, 1785, 1270]
-putData('Breast', 50, 'Female', 'Unknown', '1', survive)
-survive = [43465,2135,2122,1994,1593,1137]
-putData('Breast', 50, 'Female', 'Unknown', '1', survive)
-survive = [25389,1146, 1185, 1130, 946, 684]
-putData('Breast', 50, 'Female', 'Unknown', '1', survive)
-survive = [14343,2030, 1828, 1385, 929, 651]
-putData('Breast', 50, 'Female', 'Unknown', '1', survive)
 
+survive = [(835+2878+2135+1146+2030)/10, (931+2785+2122+1185+1828)/10, (873+2379+1994+1994+1130+1385)/10, (692+1785+1593+946+929)/10, (487+1270+1137+684+651)/10,(20393+47859+43465+25389+14343)/10]
+putData('Breast', 50, 'Female', 'Breast - Unknown', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '1'
+survive = [9024/10,8851/10,7761/10,5945/10,4229/10,151449/10]
+putData('Breast', 60, 'Female', 'Breast - Unknown', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '2'
+
+survive = [14279/10,11349/10,9331/10,7000/10,5303/10,117661/10]
+putData('Breast', 70, 'Female', 'Breast - Unknown', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '3'
+
+survive = [2473/10,4227/10,3779/10,2912/10,2046/10,70537/10]
+putData('Breast', 30, 'Female', 'Breast - Unknown', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+
+
+
+survive = [20,20,20,20,20,1000]
+putData('Breast', 30, 'Female', 'Breast - Lumpectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+survive = [20,20,20,20,20,1000]
+putData('Breast', 50, 'Female', 'Breast - Lumpectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+survive = [20,20,20,20,20,1000]
+putData('Breast', 60, 'Female', 'Breast - Lumpectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+survive = [20,20,20,20,20,1000]
+putData('Breast', 70, 'Female', 'Breast - Lumpectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+survive = [10,10,10,0,0,1000]
+putData('Breast', 30, 'Female', 'Breast - Mastectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+survive = [10,10,10,0,0,1000]
+putData('Breast', 50, 'Female', 'Breast - Mastectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+survive = [10,10,10,0,0,1000]
+putData('Breast', 60, 'Female', 'Breast - Mastectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
+survive = [10,10,10,0,0,1000]
+putData('Breast', 70, 'Female', 'Breast - Mastectomy plus Radiation', survive, [[.30,.0075],[.33,.0075],[.32,.154],[.5,.75]])
+print '4'
 
 
 #data entered:  female breast 50
-
-''' 
-
-class Req():
-	POST = {}
-g = Req()
-g.POST = {'cancer':'Breast', 'stage':1, 'gender':'Female', 'age':45}
-print getCancerProg(g)
-print getCancerProg(g)

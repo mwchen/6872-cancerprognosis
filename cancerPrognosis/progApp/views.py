@@ -100,26 +100,24 @@ def createStage(request):
 	### "age": age, "stage": stage name or 'None'}
 def logCancerData(request):
 	if authorizeChange(request):
-		try:
-			new_cancer_data = CancerData
-			cancer = Cancer.objects.get(type = request.Post('cancer'))
+		if True:
+			new_cancer_data = CancerData()
+			cancer = Cancer.objects.get(id = request.POST['cancer'])
 			new_cancer_data.cancer = cancer
-			if request.Post('treatment') != "None":
-				treatment = Treatment.objects.get(name = request.Post('treatment'), cancer = cancer)
+			if request.POST['treatment'] != "None":
+				treatment = Treatment.objects.get(id = request.POST['treatment'])
 				new_cancer_data.treatment = treatment
-			if request.POST('stage') != "None":
-				stage = Stage.objects.get(name = request.Post('stage'), cancer = cancer)
-				new_cancer_data.stage = stage
-			new_cancer_data.gender = request.POST('gender')
-			new_cancer_data.age = int(request.POST('age'))
+			if request.POST['stage'] != "None":
+				new_cancer_data.stage = request.POST['stage']
+			new_cancer_data.gender = Gender.objects.get(id = request.POST['gender'])
+			new_cancer_data.age = groupAge(int(request.POST['age']))
 			new_cancer_data.save()
-			try:
-				fast = quickCancerLookup.objects.get(cancer = cancer)
-				fast.delete()
-			except:
-				pass
+			fast = quickCancerLookup.objects.filter(cancer = cancer)
+			for f in fast:
+				f.delete()
+
 			return HttpResponse("data logged")
-		except:
+		else:
 			return HttpResponse("bad request", status = 500)
 	else:
 		return HttpResponse("unauthorized change", status = 500)
@@ -128,7 +126,19 @@ def convertYears(x,dic):
 	for v in dic.keys():
 		if x >= v:
 			dic[v] += 1
-				
+def groupAge(x):
+	if x < 20:
+		return 10
+	elif x < 40:
+		return 30
+	elif x < 60:
+		return 50
+	elif x < 80:
+		return 70
+	elif x< 100:
+		return 90
+	elif x< 120:
+		return 110
 def getCancerProg(request):
 	try:
 		cancer = Cancer.objects.get(id = request.POST['cancer'])
@@ -140,7 +150,7 @@ def getCancerProg(request):
 		gender = Gender.objects.get(id = request.POST['gender'])
 		stage = Stage.objects.get(cancer = cancer, name = pre_stage)
 		if pre_age != None:	
-			age = pre_age
+			age = groupAge(int(pre_age))
 		else:
 			age = -1
 			
@@ -149,6 +159,7 @@ def getCancerProg(request):
 			return HttpResponse(fast.data, content_type='application/json')
 		except:
 			cancerdata = CancerData.objects.filter(cancer = cancer)
+			print len(cancerdata)
 			if len(cancerdata) < 100:
 				json_response = json.dumps({'cancer':cancer.type, 'stage':stage.name, 'gender':gender.name, 'age':age,
 				'1year':1, '2year':1, '3year':1, '4year':1, '5year':0.1, 'treatments': 
@@ -162,26 +173,26 @@ def getCancerProg(request):
 			for cd in cancerdata:
 				if age == -1 or (cd.age <= (age + 20) and cd.age >= (age -20)):
 					if  gender.name == 'Unknown' or cd.gender == gender:
-						if cd.stage == stage:
+						if cd.stage == stage.name:
 							convertYears(cd.years_lived, counting_dic['total'])
 							convertYears(cd.years_lived, counting_dic[cd.treatment.name])
 			response = {'cancer':cancer.type, 'stage': stage.name, 'gender': gender.name, 'age': pre_age}
-			response['1year'] = (counting_dic['total'][0] - counting_dic['total'][1])/float(counting_dic['total'][0])
-			response['2year'] = (counting_dic['total'][0]-counting_dic['total'][2] - counting_dic['total'][1])/float(counting_dic['total'][0])
-			response['3year'] = (counting_dic['total'][0]-counting_dic['total'][2] - counting_dic['total'][1]- counting_dic['total'][3])/float(counting_dic['total'][0])
-			response['4year'] = (counting_dic['total'][0]-counting_dic['total'][2] - counting_dic['total'][1]- counting_dic['total'][3] -counting_dic['total'][4])/float(counting_dic['total'][0])
-			response['5year'] = (counting_dic['total'][0]-counting_dic['total'][2] - counting_dic['total'][1]- counting_dic['total'][3] -counting_dic['total'][4] -counting_dic['total'][5])/float(counting_dic['total'][0])
+			response['1year'] = round((counting_dic['total'][1])/float(counting_dic['total'][0]),2)
+			response['2year'] = round((counting_dic['total'][2])/float(counting_dic['total'][0]),2)
+			response['3year'] = round((counting_dic['total'][3])/float(counting_dic['total'][0]),2)
+			response['4year'] = round((counting_dic['total'][4])/float(counting_dic['total'][0]),2)
+			response['5year'] = round((counting_dic['total'][5])/float(counting_dic['total'][0]),2)
 			response['treatments'] = []
 			for t in treatments:
 				new_treatment_dic = {}
 				new_treatment_dic['name'] = t.name
 				new_treatment_dic['cost'] = t.cost
 				new_treatment_dic['quality_of_life'] = t.quality_of_life
-				new_treatment_dic['1year'] = (counting_dic[t.name][0] - counting_dic[t.name][1])/float(counting_dic[t.name][0])
-				new_treatment_dic['2year'] = (counting_dic[t.name][0] - counting_dic[t.name][1] - counting_dic[t.name][2])/float(counting_dic[t.name][0])
-				new_treatment_dic['3year'] = (counting_dic[t.name][0] - counting_dic[t.name][1] - counting_dic[t.name][2]-counting_dic[t.name][3])/float(counting_dic[t.name][0])
-				new_treatment_dic['4year'] = (counting_dic[t.name][0] - counting_dic[t.name][1] - counting_dic[t.name][2]-counting_dic[t.name][3] - counting_dic[t.name][4])/float(counting_dic[t.name][0])
-				new_treatment_dic['5year'] = (counting_dic[t.name][0] - counting_dic[t.name][1] - counting_dic[t.name][2]-counting_dic[t.name][3] - counting_dic[t.name][4] - counting_dic[t.name][5])/float(counting_dic[t.name][0])
+				new_treatment_dic['1year'] = round((counting_dic[t.name][1])/float(counting_dic[t.name][0]),2)
+				new_treatment_dic['2year'] = round((counting_dic[t.name][2])/float(counting_dic[t.name][0]),2)
+				new_treatment_dic['3year'] = round((counting_dic[t.name][3])/float(counting_dic[t.name][0]),2)
+				new_treatment_dic['4year'] = round((counting_dic[t.name][4])/float(counting_dic[t.name][0]),2)
+				new_treatment_dic['5year'] = round((counting_dic[t.name][5])/float(counting_dic[t.name][0]),2)
 				response['treatments'].append(new_treatment_dic)
 		
 			json_response = json.dumps(response)
@@ -244,30 +255,54 @@ def putCancers(cancers):
 		nc.save()
 		t = Treatment()
 		t.cancer = nc
-		t.name = "Unknown"
-		t.description = 'Unknown'
-		t.quality_of_life = 0
-		t.cost = 1000
+		t.name = c + " - Unknown"
+		t.description = 'Unknown Treatment'
+		t.quality_of_life = 1
+		t.cost = 0
 		t.save()
 		s = Stage()
 		s.name = '1'
-		s.description = 'The first form of '+c+' cancer'
+		s.description = 'The first stage of '+c+' cancer'
+		s.cancer = nc
+		s.save()
+		s = Stage()
+		s.name = '2'
+		s.description = 'The second stage of '+c+' cancer'
+		s.cancer = nc
+		s.save()
+		s = Stage()
+		s.name = '3'
+		s.description = 'The third stage of '+c+' cancer'
+		s.cancer = nc
+		s.save()
+		s = Stage()
+		s.name = '4'
+		s.description = 'The fourth stage of '+c+' cancer'
 		s.cancer = nc
 		s.save()
 
-def putData(cancer, age, gender, treat, st, survived):
-	print Cancer.objects.filter()
-	cancer = Cancer.objects.get(type = cancer)
-	treatment = Treatment.objects.get(cancer = cancer, name = treat)
-	stage  = Stage.objects.get(cancer = cancer, name = st)
-	gender = Gender.objects.get(name = gender)
-	for s in range(0,4):
-		for c in range(survived[s]):
-			cd = CancerData()
-			cd.cancer = cancer
-			cd.treatment = treatment
-			cd.stage = stage
-			cd.gender = gender
-			cd.age = age
-			cd.years_lived = s
-			cd.save()
+class Req():
+	POST = {}
+def putData(cancer, age, gender, treat, survived,stage_probs):
+	for st in range(1,5):
+		cancer = Cancer.objects.get(type = cancer)
+		treatment = Treatment.objects.get(cancer = cancer, name = treat)
+		stage  = Stage.objects.get(cancer = cancer, name = st)
+		gender = Gender.objects.get(name = gender)
+		x = 0
+		for s in range(len(survived)):
+			if s <5:
+				num = int(survived[s]*stage_probs[st-1][0]*stage_probs[st-1][1]+1)
+			else:
+				num = int(survived[s]*stage_probs[st-1][0]*(1-stage_probs[st-1][1])+1)
+				
+			for c in range(num):
+				x += 1
+				cd = CancerData()
+				cd.cancer = cancer
+				cd.treatment = treatment
+				cd.stage = int(stage.name)
+				cd.gender = gender
+				cd.age = groupAge(age)
+				cd.years_lived = s
+				cd.save()
