@@ -131,8 +131,10 @@ def logClinicalTrial(request):
 		new_ct.gender = Gender.objects.get(id = request.POST['gender'])
 		new_ct.age_hi = int(request.POST['age_hi'])
 		new_ct.age_low = int(request.POST['age_low'])
-		new_ct.start_date = request.POST['start_date']
-		new_ct.end_date = request.POST['end_date']
+		start = datetime.datetime.strptime(request.POST['start_date'], '%d-%m-%Y')
+		new_ct.start_date = start
+		end = datetime.datetime.strptime(request.POST['end_date'], '%d-%m-%Y')
+		new_ct.end_date = end
 		new_ct.location = request.POST['location']
 		new_ct.name = request.POST['name']
 		new_ct.contact = request.POST['contact']
@@ -145,7 +147,7 @@ def getClinicalTrial(request):
 		stage = request.POST['stage']
 		gender = Gender.objects.get(id = request.POST['gender'])
 		age = int(request.POST['age'])
-		ct_list = ClincialTrial.objects.filter(age_hi <= age, age_low >= age, gender = gender, stage = stage, cancer = cancer)
+		ct_list = ClincialTrial.objects.filter(age_hi <= age, age_low >= age, gender = gender, stage = stage, cancer = cancer, end_date > datetime.datetime.now())
 		response = [{'name': ct.name, 'contact':ct.contact, 'location':	ct.location, 'end_date': ct.end_date, 
 			'start_date': ct.start_date} for ct in ct_list]
 		json_response = json.dumps(response)
@@ -153,7 +155,6 @@ def getClinicalTrial(request):
 	else:
 		return HttpResponse('bad request', 500)
 		
-	
 
 def convertYears(x,dic):
 	for v in dic.keys():
