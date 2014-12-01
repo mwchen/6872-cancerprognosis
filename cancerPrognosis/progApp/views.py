@@ -147,7 +147,7 @@ def getClinicalTrial(request):
 		stage = request.POST['stage']
 		gender = Gender.objects.get(id = request.POST['gender'])
 		age = int(request.POST['age'])
-		ct_list = ClincialTrial.objects.filter(age_hi <= age, age_low >= age, gender = gender, stage = stage, cancer = cancer, end_date > datetime.datetime.now())
+		ct_list = ClincialTrial.objects.filter(age_hi <= age, age_low >= age, gender = gender, stage = stage, cancer = cancer)
 		response = [{'name': ct.name, 'contact':ct.contact, 'location':	ct.location, 'end_date': ct.end_date, 
 			'start_date': ct.start_date} for ct in ct_list]
 		json_response = json.dumps(response)
