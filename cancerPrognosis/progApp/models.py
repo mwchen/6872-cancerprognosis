@@ -39,6 +39,18 @@ class CancerData(models.Model):
 	gender = models.ForeignKey(Gender, null = True, blank = True)
 	age = models.PositiveIntegerField(null = True, blank = True)
 	years_lived = models.PositiveIntegerField(default = 0)
+	
+class ClinicalTrial(models.Model):
+	cancer = models.ForeignKey(Cancer)
+	stage = models.PositiveIntegerField(null = True, blank = True)
+	gender = models.ForeignKey(Gender, null = True, blank = True)
+	age_hi = models.PositiveIntegerField(null = True, blank = True)
+	age_low = models.PositiveIntegerField(null = True, blank = True)
+	start_date = models.DateField()
+	end_date  = models.DateField()
+	name = models.CharField(null = True, blank = True, max_length = 100)
+	contact_info = models.CharField(null = True, blank = True, max_length = 400)
+	location = models.CharField(null = True, blank = True, max_length = 100)
 
 class LookUpData(models.Model):
 	cancer = models.ForeignKey(Cancer)

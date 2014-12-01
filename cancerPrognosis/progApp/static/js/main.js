@@ -15,11 +15,21 @@ function look_up() {
         type : "POST", // http method
         data: { csrfmiddlewaretoken: "{{ csrf_token }}", 'stage':$('#id_stage').val(), 'gender':$('#id_gender').val(), 
         	'age':$('#id_age').val(), 'cancer':$('#id_cancer').val()},
+        beforeSend: function() { 
+        $('#wait').show();
+        document.getElementById('results-container').style.display = 'None';
+        
+        
+         },
+        	
+        
+        
        // data : { lookup : $('#look-up-form').val() }, // data sent with the post request
 
         // handle a successful response
         success : function(json) {
             //$('#look-up-form').val(''); // remove the value from the input
+            $('#wait').hide();
             console.log(json); // log the returned json to the console
             console.log("success"); // another sanity check
             document.getElementById('results-container').style.display = 'block';

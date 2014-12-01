@@ -4,6 +4,7 @@ from django.template import Context, loader, RequestContext
 from django.views.decorators.csrf import csrf_exempt
 import json
 from models import *
+import datetime
 from progApp.forms import LookUpForm, UpdateDataForm
 
 def index(request):
@@ -100,7 +101,7 @@ def createStage(request):
 	### "age": age, "stage": stage name or 'None'}
 def logCancerData(request):
 	if authorizeChange(request):
-		if True:
+		try:
 			new_cancer_data = CancerData()
 			cancer = Cancer.objects.get(id = request.POST['cancer'])
 			new_cancer_data.cancer = cancer
@@ -116,11 +117,43 @@ def logCancerData(request):
 			for f in fast:
 				f.delete()
 
-			return HttpResponse("data logged")
-		else:
+			return HttpResponse("data logged", status = 200)
+		except:
 			return HttpResponse("bad request", status = 500)
 	else:
 		return HttpResponse("unauthorized change", status = 500)
+	
+def logClinicalTrial(request):
+	if True:
+		new_ct = ClinicalTrial()
+		cancer = Cancer.objects.get(id = request.POST['cancer'])
+		new_ct.cancer = cancer
+		new_ct.gender = Gender.objects.get(id = request.POST['gender'])
+		new_ct.age_hi = int(request.POST['age_hi'])
+		new_ct.age_low = int(request.POST['age_low'])
+		new_ct.start_date = request.POST['start_date']
+		new_ct.end_date = request.POST['end_date']
+		new_ct.location = request.POST['location']
+		new_ct.name = request.POST['name']
+		new_ct.contact = request.POST['contact']
+	else:
+		return HttpResponse("data logged", status = 200)
+		
+def getClinicalTrial(request):
+	if True:
+		cancer = Cancer.objects.get(id = request.POST['cancer'])
+		stage = request.POST['stage']
+		gender = Gender.objects.get(id = request.POST['gender'])
+		age = int(request.POST['age'])
+		ct_list = ClincialTrial.objects.filter(age_hi <= age, age_low >= age, gender = gender, stage = stage, cancer = cancer)
+		response = [{'name': ct.name, 'contact':ct.contact, 'location':	ct.location, 'end_date': ct.end_date, 
+			'start_date': ct.start_date} for ct in ct_list]
+		json_response = json.dumps(response)
+		return HttpResponse(json_response, type = 'javascript/application')
+	else:
+		return HttpResponse('bad request', 500)
+		
+	
 
 def convertYears(x,dic):
 	for v in dic.keys():
@@ -172,28 +205,29 @@ def getCancerProg(request):
 		
 			for cd in cancerdata:
 				if age == -1 or (cd.age <= (age + 20) and cd.age >= (age -20)):
-					if  gender.name == 'Unknown' or cd.gender == gender:
+					if  gender.name == 'Both' or cd.gender == gender:
 						if cd.stage == stage.name:
 							convertYears(cd.years_lived, counting_dic['total'])
 							convertYears(cd.years_lived, counting_dic[cd.treatment.name])
 			response = {'cancer':cancer.type, 'stage': stage.name, 'gender': gender.name, 'age': pre_age}
-			response['1year'] = round((counting_dic['total'][1])/float(counting_dic['total'][0]),2)
-			response['2year'] = round((counting_dic['total'][2])/float(counting_dic['total'][0]),2)
-			response['3year'] = round((counting_dic['total'][3])/float(counting_dic['total'][0]),2)
-			response['4year'] = round((counting_dic['total'][4])/float(counting_dic['total'][0]),2)
-			response['5year'] = round((counting_dic['total'][5])/float(counting_dic['total'][0]),2)
+			response['1year'] = round((counting_dic['total'][1])/float(counting_dic['total'][0]),5)
+			response['2year'] = round((counting_dic['total'][2])/float(counting_dic['total'][0]),5)
+			response['3year'] = round((counting_dic['total'][3])/float(counting_dic['total'][0]),5)
+			response['4year'] = round((counting_dic['total'][4])/float(counting_dic['total'][0]),5)
+			response['5year'] = round((counting_dic['total'][5])/float(counting_dic['total'][0]),5)
 			response['treatments'] = []
 			for t in treatments:
-				new_treatment_dic = {}
-				new_treatment_dic['name'] = t.name
-				new_treatment_dic['cost'] = t.cost
-				new_treatment_dic['quality_of_life'] = t.quality_of_life
-				new_treatment_dic['1year'] = round((counting_dic[t.name][1])/float(counting_dic[t.name][0]),2)
-				new_treatment_dic['2year'] = round((counting_dic[t.name][2])/float(counting_dic[t.name][0]),2)
-				new_treatment_dic['3year'] = round((counting_dic[t.name][3])/float(counting_dic[t.name][0]),2)
-				new_treatment_dic['4year'] = round((counting_dic[t.name][4])/float(counting_dic[t.name][0]),2)
-				new_treatment_dic['5year'] = round((counting_dic[t.name][5])/float(counting_dic[t.name][0]),2)
-				response['treatments'].append(new_treatment_dic)
+				if t.name != cancer.type + ' - Unknown':
+					new_treatment_dic = {}
+					new_treatment_dic['name'] = t.name
+					new_treatment_dic['cost'] = t.cost
+					new_treatment_dic['quality_of_life'] = t.quality_of_life
+					new_treatment_dic['1year'] = round((counting_dic[t.name][1])/float(counting_dic[t.name][0]),5)
+					new_treatment_dic['2year'] = round((counting_dic[t.name][2])/float(counting_dic[t.name][0]),5)
+					new_treatment_dic['3year'] = round((counting_dic[t.name][3])/float(counting_dic[t.name][0]),5)
+					new_treatment_dic['4year'] = round((counting_dic[t.name][4])/float(counting_dic[t.name][0]),5)
+					new_treatment_dic['5year'] = round((counting_dic[t.name][5])/float(counting_dic[t.name][0]),5)
+					response['treatments'].append(new_treatment_dic)
 		
 			json_response = json.dumps(response)
 			try:
@@ -245,6 +279,7 @@ def updatePatient(request):
 		# If the request was not a POST, display the form to enter details.
 		form = UpdateDataForm()
 	return render_to_response('progApp/updatePatient.html', {'form': form}, context)
+
 	
 
 def putCancers(cancers):
