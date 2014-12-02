@@ -15,7 +15,7 @@
                 <a class="navbar-brand glyphicon glyphicon-home" aria-hidden="true" href=".."></a>
                 <ul class="nav navbar-nav nav-center">
                     <li><a href="/lookup/">Look Up Information</a></li>
-                    <li><a href="/updatePatient/">Update Patient</a></li>
+                    <li><a href="/updatePatient/">Update Patient Database</a></li>
                         <!--<li><a href=".."> Login </a> </li>-->
                 </ul>
             </div>
@@ -24,7 +24,7 @@
 		<div id="main" class="container" role="main">
             <div class="row">
                 <div id = "enter-info-container" class="col-md-12 container-tile" >
-                    <h1>Update Database</h1>
+                    <h1>Update Patient Database</h1>
                     <form id="update-form" method="post" action='/updatePatient/logCancerData/'>
                         {% csrf_token %}
 

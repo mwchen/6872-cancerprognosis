@@ -58,12 +58,12 @@ function update_fields(result) {
                 // Add treatment name.
                 var treatmentName = document.createElement('div');
                 treatmentName.innerHTML="<div class='field-heading'> Treatment: </div>" + currentTreatment['name'];
-                treatmentName.className = "treatment-name col-md-3";
+                treatmentName.className = "treatment-name col-md-4";
 
                 // Add treatment cost.
                 var treatmentCost = document.createElement('div');
                 treatmentCost.innerHTML="<div class='field-heading'> Cost: </div>" + currentTreatment['cost'];
-                treatmentCost.className = "treatment-cost col-md-3";
+                treatmentCost.className = "treatment-cost col-md-4";
 
                 // Add treatment quality of life.
                 var treatmentQOL = document.createElement('div');
@@ -85,7 +85,7 @@ function update_fields(result) {
                 // Add graph for treatment.
                 var treatmentData = get_data(currentTreatment);
                 var canvas = document.createElement('canvas');
-                canvas.className = "col-md-3";
+                canvas.className = "col-md-4";
                 canvas.setAttribute("id", "treatment-chart-" + i);
 
                 treatmentDiv.appendChild(treatmentName);
