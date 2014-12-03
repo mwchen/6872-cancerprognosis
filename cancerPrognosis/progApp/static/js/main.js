@@ -134,6 +134,9 @@ function update_fields(result) {
 
                 document.getElementById('treatments').appendChild(treatmentDiv);
                 create_chart("#treatment-chart-"+i, treatmentData);
+                
+                var breakEl = document.createElement("br");
+		        document.getElementById('treatments').appendChild(breakEl);
             }
         }
 
