@@ -8,6 +8,11 @@ $('#look-up-form').on('submit', function(event) {
 	look_up();
 });
 
+$('#patient_view').click(function(){
+ 		window.location.href = "../../pdf?stage="+$('#id_stage').val()+'&gender='+$('#id_gender').val()+'&age='+$('#id_age').val() +'&cancer='+$('#id_cancer').val();
+		
+});
+
 // AJAX for posting
 function look_up() {
 	console.log("look up is working");
@@ -26,8 +31,8 @@ function look_up() {
 
         // handle a successful response
         success : function(json) {
+        	$('#wait').hide();
             //$('#look-up-form').val(''); // remove the value from the input
-            $('#wait').hide();
             console.log(json); // log the returned json to the console
             console.log("success"); // another sanity check
             document.getElementById('results-container').style.display = 'block';

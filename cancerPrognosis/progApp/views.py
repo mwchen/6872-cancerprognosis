@@ -6,6 +6,10 @@ import json
 from models import *
 import datetime
 from progApp.forms import LookUpForm, UpdateDataForm
+from reportlab.pdfgen import canvas
+from django.views.static import serve
+import reportlab
+
 
 def index(request):
 	# Obtain the context from the HTTP request.
@@ -173,6 +177,9 @@ def groupAge(x):
 		return 90
 	elif x< 120:
 		return 110
+
+@csrf_exempt	
+
 def getCancerProg(request):
 	try:
 		cancer = Cancer.objects.get(id = request.POST['cancer'])
@@ -342,3 +349,100 @@ def putData(cancer, age, gender, treat, survived,stage_probs):
 				cd.age = groupAge(age)
 				cd.years_lived = s
 				cd.save()
+				
+class Request():
+	POST = {}
+
+from reportlab.lib.colors import Color, blue, red, white
+from reportlab.graphics.charts.legends import Legend, TotalAnnotator  
+from reportlab.graphics.shapes import Drawing, _DrawingEditorMixin  
+from reportlab.lib.validators import Auto  
+from reportlab.graphics.charts.lineplots import AreaLinePlot  
+from reportlab.graphics import renderPDF
+from reportlab.graphics.shapes import Drawing
+
+def generateGraph(data):
+	dl = Drawing(400, 200)
+	lp = AreaLinePlot()
+	lp.data=[(1,1), (4,.5)]
+	lp.width, lp.height = 400, 400
+	lp.xValueAxis.valueMin = 1
+	lp.xValueAxis.valueMax =5
+	lp.xValueAxis.valueSteps = [1,2,3,4,5,6]
+	lp.yValueAxis.valueMin = 0
+	lp.yValueAxis.valueMax =1
+	lp.strokeColor=reportlab.lib.colors.HexColor('#193441')
+	lp.fillColor=reportlab.lib.colors.HexColor('#fcfff5')
+	lp.lines[0].strokeColor =reportlab.lib.colors.HexColor('#193441')
+	lp.reversePlotOrder = False
+	lp.joinedLines=1
+	dl.add(lp)
+	return dl
+def post_text(text,canvas,x,y):
+	words = text.split(' ')
+	while len(words) > 0:
+		line = ''
+		while len(line) < 70:
+			if len(line) == 0:
+				line = words.pop(0)
+			else:
+				line = line + ' ' + words.pop(0)
+			if len(words) == 0:
+				break
+		canvas.drawString(x,y,line)
+		y += -17
+	return y
+@csrf_exempt	
+def pdf(request):
+	dl = generateGraph([(1,1), (4,.5)])
+	print request.GET['cancer']
+	# Create the HttpResponse object with the appropriate PDF headers.
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="PatientView.pdf"'
+	p = canvas.Canvas(response)
+	x = 20
+	y = 780
+	r = Request()
+	r.POST['cancer'] = request.GET['cancer']
+	r.POST['stage'] = request.GET['stage']
+	r.POST['age'] = request.GET['age']
+	r.POST['gender'] = request.GET['gender']
+	ans = getCancerProg(r)
+	
+	for a in ans:
+		data = json.loads(a)
+	cancer = Cancer.objects.get(type = data['cancer'])
+	cancer.description = 'Stomach cancer or gastric cancer, is when cancer develops from the lining of the stomach.'
+	cancer.save()
+	stage = Stage.objects.get(cancer = cancer, name = str(data['stage']))
+	stage.description = 'Penetration to the second or third layers of the stomach (Stage 1A) or to the second layer and nearby lymph nodes (Stage 1B)'
+	stage.save()
+	p.setFont("Helvetica-Bold", 39)
+	p.drawString(x-12,y,'CPA Prognosisis Patient Sheet')
+	y = y -40
+	p.setFont("Helvetica-Bold",20)
+	p.drawString(x-5,y,'Patient Diagnosis')
+	y += -20
+	p.setFont("Helvetica-Bold",14)
+	p.drawString(x-5,y,data['cancer'] + ' Cancer')
+	y = y - 17
+	p.setFont("Helvetica",14)
+	p.drawString(x-5,y,cancer.description)
+	p.setFont("Helvetica-Bold",14)
+	y += -17
+	p.drawString(x-5, y , 'Stage '+str(data['stage']))
+	y += -17
+	p.setFont("Helvetica",14)
+	y = post_text(stage.description,p,x,y)
+	p.setFont("Helvetica-Bold",14)
+	p.drawString(x-5, y, data['gender'])
+	y += -17
+	p.drawString(x-5, y, str(data['age']) + ' Years Old')
+	y = y - 17
+
+	renderPDF.draw(dl, p, 0, 0)
+
+	# Close the PDF object cleanly, and we're done.
+	p.showPage()
+	p.save()
+	return response
