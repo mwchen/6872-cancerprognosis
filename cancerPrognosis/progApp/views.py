@@ -305,22 +305,22 @@ def putCancers(cancers):
 		t.save()
 		s = Stage()
 		s.name = '1'
-		s.description = 'The first stage of '+c+' cancer'
+		s.description = 'The first stage of '+c+' cancer. The cancer is local to the region.'
 		s.cancer = nc
 		s.save()
 		s = Stage()
 		s.name = '2'
-		s.description = 'The second stage of '+c+' cancer'
+		s.description = 'The second stage of '+c+' cancer.  The cancer is local to the region.'
 		s.cancer = nc
 		s.save()
 		s = Stage()
 		s.name = '3'
-		s.description = 'The third stage of '+c+' cancer'
+		s.description = 'The third stage of '+c+' cancer. The cancer has spread to areas near the initial region.'
 		s.cancer = nc
 		s.save()
 		s = Stage()
 		s.name = '4'
-		s.description = 'The fourth stage of '+c+' cancer'
+		s.description = 'The fourth stage of '+c+' cancer. The cancer has spread to other areas in the body'
 		s.cancer = nc
 		s.save()
 
@@ -360,17 +360,19 @@ from reportlab.lib.validators import Auto
 from reportlab.graphics.charts.lineplots import AreaLinePlot  
 from reportlab.graphics import renderPDF
 from reportlab.graphics.shapes import Drawing
+from reportlab.lib.colors import HexColor
 
-def generateGraph(data):
+
+def generateGraph(data, min, max):
 	dl = Drawing(400, 200)
 	lp = AreaLinePlot()
-	lp.data=[(1,1), (4,.5)]
-	lp.width, lp.height = 400, 400
+	lp.data=data
+	lp.width, lp.height = 400, 200
 	lp.xValueAxis.valueMin = 1
 	lp.xValueAxis.valueMax =5
-	lp.xValueAxis.valueSteps = [1,2,3,4,5,6]
-	lp.yValueAxis.valueMin = 0
-	lp.yValueAxis.valueMax =1
+	lp.xValueAxis.valueSteps = [1,2,3,4,5]
+	lp.yValueAxis.valueMin = min
+	lp.yValueAxis.valueMax =max
 	lp.strokeColor=reportlab.lib.colors.HexColor('#193441')
 	lp.fillColor=reportlab.lib.colors.HexColor('#fcfff5')
 	lp.lines[0].strokeColor =reportlab.lib.colors.HexColor('#193441')
@@ -382,7 +384,7 @@ def post_text(text,canvas,x,y):
 	words = text.split(' ')
 	while len(words) > 0:
 		line = ''
-		while len(line) < 70:
+		while len(line) < 85:
 			if len(line) == 0:
 				line = words.pop(0)
 			else:
@@ -394,8 +396,7 @@ def post_text(text,canvas,x,y):
 	return y
 @csrf_exempt	
 def pdf(request):
-	dl = generateGraph([(1,1), (4,.5)])
-	print request.GET['cancer']
+	happy = {0:'Difficult', 1:'Moderate Difficulties', 2: 'No Change In Life-Style'}
 	# Create the HttpResponse object with the appropriate PDF headers.
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachment; filename="PatientView.pdf"'
@@ -411,36 +412,79 @@ def pdf(request):
 	
 	for a in ans:
 		data = json.loads(a)
+	p.setFillColor(HexColor(0x193441))
 	cancer = Cancer.objects.get(type = data['cancer'])
-	cancer.description = 'Stomach cancer or gastric cancer, is when cancer develops from the lining of the stomach.'
-	cancer.save()
-	stage = Stage.objects.get(cancer = cancer, name = str(data['stage']))
-	stage.description = 'Penetration to the second or third layers of the stomach (Stage 1A) or to the second layer and nearby lymph nodes (Stage 1B)'
-	stage.save()
-	p.setFont("Helvetica-Bold", 39)
-	p.drawString(x-12,y,'CPA Prognosisis Patient Sheet')
+	stage  = Stage.objects.get(cancer = cancer, name = str(data['stage']))
+	p.setFont("Helvetica-Bold", 38)
+	p.drawString(x-6,y,'CPA Prognosisis Patient Sheet')
 	y = y -40
 	p.setFont("Helvetica-Bold",20)
 	p.drawString(x-5,y,'Patient Diagnosis')
 	y += -20
 	p.setFont("Helvetica-Bold",14)
+	p.setFillColor(HexColor(0x193441))
+	p.drawString(x-5, y, data['gender'])
+	y += -20
+	p.drawString(x-5, y, str(data['age']) + ' Years Old')
+	y += -20
 	p.drawString(x-5,y,data['cancer'] + ' Cancer')
-	y = y - 17
-	p.setFont("Helvetica",14)
-	p.drawString(x-5,y,cancer.description)
-	p.setFont("Helvetica-Bold",14)
-	y += -17
-	p.drawString(x-5, y , 'Stage '+str(data['stage']))
-	y += -17
+	p.setFillColor(HexColor(0x000000))
+
+	y = y - 20
 	p.setFont("Helvetica",14)
 	y = post_text(stage.description,p,x,y)
 	p.setFont("Helvetica-Bold",14)
-	p.drawString(x-5, y, data['gender'])
-	y += -17
-	p.drawString(x-5, y, str(data['age']) + ' Years Old')
-	y = y - 17
+	p.setFillColor(HexColor(0x193441))
+	p.drawString(x-5, y , 'Stage '+str(data['stage']))
+	p.setFillColor(HexColor(0x000000))
+	y += -20
+	p.setFont("Helvetica",14)
+	y = post_text(stage.description,p,x,y)
+	p.setFont("Helvetica-Bold",14)
+	
+	y = y - 30
+	p.setFont("Helvetica-Bold",20)
+	p.drawString(x-5,y,'Possible Treatments')
+	y += -20
+	p.setFont("Helvetica",14)
+	count = 1
+	for t in data['treatments']:
+		if y < 200:
+			p.showPage()
+			y = 780
+		treat = Treatment.objects.get(cancer = cancer, name = t['name'])
+		p.setFont("Helvetica-Bold",14)
+		p.setFillColor(HexColor(0x193441))
 
-	renderPDF.draw(dl, p, 0, 0)
+		p.drawString(x-5,y,'Treatment ' + str(count)+':' )
+		y = y - 20
+		p.drawString(x-5,y,t['name'])
+		y = y - 20
+		p.setFillColor(HexColor(0x000000))
+		p.setFont("Helvetica",14)
+		y = post_text(treat.description, p, x, y)
+		p.setFillColor(HexColor(0x193441))
+		p.setFont("Helvetica-Bold",14)
+		p.drawString(x-5,y,'Average Cost: ' + str(t['cost']) )
+		y = y - 20
+		p.drawString(x-5,y,'Quality of Life: ' + happy[t['quality_of_life']] )
+		y = y - 25
+		p.drawString(x+ 180,y,'Probability of Survival')
+		y = y -217
+		if y < 150:
+			p.showPage()
+			y = 780
+			y = y - 217
+		graph = generateGraph([(1, t['1year']), (2, t['2year']), (3,t['3year']), (4, t['4year']), (5, t['5year'])], min([t['5year'],t['1year'],t['2year'],t['3year'],t['4year']]), max([t['5year'],t['1year'],t['2year'],t['3year'],t['4year']]))
+		renderPDF.draw(graph,p, x+20, y)
+		p.setFillColor(HexColor(0x000000))
+		y += -20
+		p.setFont("Helvetica",12)
+		p.drawString(x+ 225,y,'Years')
+		y = y - 50
+		count += 1
+		
+		
 
 	# Close the PDF object cleanly, and we're done.
 	p.showPage()

@@ -8,9 +8,40 @@ $('#look-up-form').on('submit', function(event) {
 	look_up();
 });
 
-$('#patient_view').click(function(){
+$('#pdf-button').click(function(){
  		window.location.href = "../../pdf?stage="+$('#id_stage').val()+'&gender='+$('#id_gender').val()+'&age='+$('#id_age').val() +'&cancer='+$('#id_cancer').val();
 		
+});
+
+$('#clinical-trial-button').click(function(){
+	$.ajax({
+        url : "../lookup/", // the endpoint
+        type : "POST", // http method
+        data: { csrfmiddlewaretoken: "{{ csrf_token }}", 'stage':$('#id_stage').val(), 'gender':$('#id_gender').val(), 
+        	'age':$('#id_age').val(), 'cancer':$('#id_cancer').val()},
+        	
+       // data : { lookup : $('#look-up-form').val() }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+        
+        	if(json['age'] < 16){
+        	age = '0';
+        	}
+        	else if(json['age'] < 65){
+        	age  = '1';
+        	}
+        	else{
+        	age = '2';
+        	}
+        	numt = json['stage'] - 1;
+        	window.location.href = 'https://clinicaltrials.gov/ct2/results?term='+json['cancer']+'cancer&recr=&rslt=&type=&cond=&intr=&titles=&outc=&spons=&lead=&id=&state1=&cntry1=&state2=&cntry2=&state3=&cntry3=&locn=&gndr=&age='+age+'&phase='+String((numt))+'&rcv_s=&rcv_e=&lup_s=&lup_e='
+
+            //$('#look-up-form').val(''); // remove the value from the input
+            
+        },
+
+    });
 });
 
 // AJAX for posting

@@ -2,7 +2,6 @@ from django.test import TestCase
 
 # Create your tests here.
 from views import *
-'''
 
 gm = Gender()
 gm.name = 'Male'
@@ -13,21 +12,28 @@ gf.save()
 gu = Gender()
 gu.name = 'Both'
 gu.save()
-all_cancers = ['Lip', 'Skin Melanoma', 'Tounge', 'Breast', 'Oral Cavity', 'Cervix Uteri', 'Salivary Gland', 'Corpus Uteri',
-	'Oropharynx', 'Ovary', 'Nasopharynx', 'Vagina and vulva', 'Hypopharynx', 'Prostate', 'Head and Neck', 'Testis', 
-	'Esophagus', 'Penis', 'Stomach', 'Urinary Bladder', 'Small Intestine', 'Kidney', 'Colon Rectum', 'Brain', 'Colon', 'Thyroid',
-	'Rectum', 'Plasma cell', 'Liver', "Hodgkin's lymphoma", 'Gallbladder', "Non Hodgkin lymphoma", 'Pancrease', 'SBLL/CLL', 
-	'Nasal cavaties and sinuses', 'LL/ALL', 'Larynx', 'AML', 'Lung', 'MPN', 'Pleura', 'CML', 'Bones and cartilages', 'MDS']
+all_cancers = ['Breast', 'Stomach', 'Prostate']
 putCancers(all_cancers)
+cancer = Cancer.objects.get(type = 'Breast')
+cancer.description = 'Cancer that forms in tissues of the breast. The most common type of breast cancer is ductal carcinoma, which begins in the lining of the milk ducts (thin tubes that carry milk from the lobules of the breast to the nipple). Another type of breast cancer is lobular carcinoma, which begins in the lobules (milk glands) of the breast. Invasive breast cancer is breast cancer that has spread from where it began in the breast ducts or lobules to surrounding normal tissue. Breast cancer occurs in both men and women, although male breast cancer is rare. '
+cancer.save()
+cancer = Cancer.objects.get(type = 'Stomach')
+cancer.description = 'Stomach cancer, also called gastric cancer, is a malignant tumor arising from the lining of the stomach. Stomach cancers are classified according to the type of tissue where they originate. The most common type of stomach cancer is adenocarcinoma, which starts in the glandular tissue of the stomach and accounts for 90% to 95% of all stomach cancers.'
+cancer.save()
+cancer = Cancer.objects.get(type = 'Prostate')
+cancer.description = "Prostate cancer is cancer that occurs in a prostate, a small walnut-shaped gland that produces the seminal fluid that nourishes and transports sperm. Prostate cancer is one of the most common types of cancer in men. Prostate cancer usually grows slowly and initially remains confined to the prostate gland, where it may not cause serious harm."
+cancer.save()
 t = Treatment()
 t.cancer = Cancer.objects.get(type = 'Breast')
 t.name = 'Breast - Lumpectomy plus Radiation'
 t.cost = 10000
 t.quality_of_life = 2
+t.description = 'Lumpectomy is the removal of the breast tumor and some of the normal tissue that surrounds it. Lumpectomy is a form of breastconserving or breast preservation surgery.'
 t.save()
 t = Treatment()
 t.cancer = Cancer.objects.get(type = 'Breast')
 t.name = 'Breast - Mastectomy plus Radiation'
+t.description = 'A mastectomy is performed under general anesthesia, which means you are unconscious (asleep) during the surgery. The surgeon removes all of the breast tissue (and in most cases, but not all, the nipple and areola are also removed). The lining of the chest muscles may also be removed. The surgeon closes the skin with stitches and attaches a temporary tube so that fluid from the wound can drain out'
 t.cost = 10000
 t.quality_of_life = 1
 t.save()
@@ -199,4 +205,4 @@ print '1'
 survive = [22002/10,20431/10,15580/10,11958/10,8894/10,386268/10]
 putData('Prostate', 70, 'Male', 'Prostate - Unknown', survive, [[.13,.359],[.13,.359],[.29,.712],[.45,.958]])
 print '2'
-'''
+
