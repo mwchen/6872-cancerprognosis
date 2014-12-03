@@ -16,14 +16,10 @@ function look_up() {
         data: { csrfmiddlewaretoken: "{{ csrf_token }}", 'stage':$('#id_stage').val(), 'gender':$('#id_gender').val(), 
         	'age':$('#id_age').val(), 'cancer':$('#id_cancer').val()},
         beforeSend: function() { 
-        $('#wait').show();
-        document.getElementById('results-container').style.display = 'None';
-        
-        
+            $('#wait').show();
+            document.getElementById('results-container').style.display = 'None';
          },
         	
-        
-        
        // data : { lookup : $('#look-up-form').val() }, // data sent with the post request
 
         // handle a successful response
@@ -49,6 +45,10 @@ function update_fields(result) {
     $.each(result, function(key, value) {
         // If the key is a treatment, we want to populate the treatment.
         if (key == "treatments") {
+            // Clear the previous treatments.
+            document.getElementById('treatments').innerHTML ="";
+            
+            // Iterate through the treatments for this type of cancer.
             var treatmentOptions = result[key];
             for (i=0; i < treatmentOptions.length; i++) {
                 var currentTreatment = treatmentOptions[i];
@@ -58,12 +58,12 @@ function update_fields(result) {
                 // Add treatment name.
                 var treatmentName = document.createElement('div');
                 treatmentName.innerHTML="<div class='field-heading'> Treatment: </div>" + currentTreatment['name'];
-                treatmentName.className = "treatment-name col-md-4";
+                treatmentName.className = "treatment-name text col-md-4";
 
                 // Add treatment cost.
                 var treatmentCost = document.createElement('div');
                 treatmentCost.innerHTML="<div class='field-heading'> Cost: </div>" + currentTreatment['cost'];
-                treatmentCost.className = "treatment-cost col-md-4";
+                treatmentCost.className = "treatment-cost text col-md-4";
 
                 // Add treatment quality of life.
                 var treatmentQOL = document.createElement('div');
@@ -80,7 +80,7 @@ function update_fields(result) {
                 
                 treatmentQOL.innerHTML += '<i class="fa fa-frown-o fa-2x"></i>';
                 }
-                treatmentQOL.className = "treatment-quality-of-life col-md-3";
+                treatmentQOL.className = "treatment-quality-of-life text col-md-3";
 
                 // Add graph for treatment.
                 var treatmentData = get_data(currentTreatment);

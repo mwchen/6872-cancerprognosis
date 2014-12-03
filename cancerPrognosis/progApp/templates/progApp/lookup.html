@@ -60,17 +60,17 @@
                     <div class="row main-text" id="stage">  <div class="field-heading col-md-2"> Stage: </div> </div>
                     <div class="row main-text" id="age">  <div class="field-heading col-md-2"> Age: </div> </div>
                     <div class="row main-text" id="gender">  <div class="field-heading col-md-2"> Gender: </div> </div>
+                    <h3 id='chart-label' class='col-md-12'> General Prognosis for Treatments </h3>
                     <div class="row" id="chart-area"> <canvas id="mainChart" class="col-md-6"> </canvas></div>
 
-                    <div class="treatment-group" id="treatments">
-                        <h2> Treatment Options </h2>
-                    </div>
+                    <h3 id='treatment-label' class='col-md-12'> Treatment Options </h3>
+                    <div class="treatment-group" id="treatments"> </div>
 
                     <br>
                     <br>
                     <div id="print-buttons-container">
-                        <button type="button" class="btn btn-primary col-md-4 col-md-offset-1"> PDF for Patient </button>
-                        <button type="button" class="btn btn-primary col-md-4 col-md-offset-2"> Print for Reference </button>
+                        <button type="button" class="btn btn-primary col-md-4 col-md-offset-1" id="pdf-button"> PDF for Patient </button>
+                        <button type="button" class="btn btn-primary col-md-4 col-md-offset-2" id="clinical-trial-button"> Clinical Trial Info</button>
                     </div>
                 </div>
                 <div id="error"> </div>
