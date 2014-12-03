@@ -416,7 +416,7 @@ def pdf(request):
 	cancer = Cancer.objects.get(type = data['cancer'])
 	stage  = Stage.objects.get(cancer = cancer, name = str(data['stage']))
 	p.setFont("Helvetica-Bold", 38)
-	p.drawString(x-6,y,'CPA Prognosisis Patient Sheet')
+	p.drawString(x-6,y,'Cancer Prognosis - Patient Sheet')
 	y = y -40
 	p.setFont("Helvetica-Bold",20)
 	p.drawString(x-5,y,'Patient Diagnosis')
