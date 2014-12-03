@@ -465,7 +465,7 @@ def pdf(request):
 		y = post_text(treat.description, p, x, y)
 		p.setFillColor(HexColor(0x193441))
 		p.setFont("Helvetica-Bold",14)
-		p.drawString(x-5,y,'Average Cost: ' + str(t['cost']) )
+		p.drawString(x-5,y,'Average Cost: $' + str(t['cost']) )
 		y = y - 20
 		p.drawString(x-5,y,'Quality of Life: ' + happy[t['quality_of_life']] )
 		y = y - 25

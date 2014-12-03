@@ -101,7 +101,7 @@ function update_fields(result) {
 
                 // Add treatment cost.
                 var treatmentCost = document.createElement('div');
-                treatmentCost.innerHTML="<div class='field-heading'> Cost: </div>" + currentTreatment['cost'];
+                treatmentCost.innerHTML="<div class='field-heading'> Cost: $</div>" + currentTreatment['cost'];
                 treatmentCost.className = "treatment-cost text col-md-4";
 
                 // Add treatment quality of life.
