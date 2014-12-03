@@ -60,7 +60,7 @@ function update_fields(result) {
 
                 // Add treatment name.
                 var treatmentName = document.createElement('div');
-                treatmentName.innerHTML="<div class='field-heading'> Treatment: </div>" + currentTreatment['name'];
+                treatmentName.innerHTML="<div class='field-heading'> Treatment "+ (i+1) + ": </div>" + currentTreatment['name'];
                 treatmentName.className = "treatment-name text col-md-4";
 
                 // Add treatment cost.
@@ -112,6 +112,7 @@ function update_fields(result) {
     });
 
     // Add the years to create the main graph.
+    $("#mainChart").replaceWith("<canvas id='mainChart'></canvas>");
     data = get_data(result);
     create_chart("#mainChart", data);
 }
@@ -133,6 +134,5 @@ function get_data(input_array) {
 // Create a chart at the expected location with a particular dataset.
 function create_chart(location, data) {
     var ctx = $(location).get(0).getContext("2d");
-    console.log($(location).get(0).getContext("2d"));
     var myNewChart = new Chart(ctx).Line(data);
 }
