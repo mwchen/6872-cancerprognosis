@@ -1,5 +1,6 @@
 $(document).ready(function () {
     document.getElementById('results-container').style.display = 'none';
+    document.getElementById('treatment-container').style.display = 'None';
 });
 
 $('#look-up-form').on('submit', function(event) {
@@ -18,6 +19,7 @@ function look_up() {
         beforeSend: function() { 
             $('#wait').show();
             document.getElementById('results-container').style.display = 'None';
+            document.getElementById('treatment-container').style.display = 'None';
          },
         	
        // data : { lookup : $('#look-up-form').val() }, // data sent with the post request
@@ -29,6 +31,7 @@ function look_up() {
             console.log(json); // log the returned json to the console
             console.log("success"); // another sanity check
             document.getElementById('results-container').style.display = 'block';
+            document.getElementById('treatment-container').style.display = 'block';
             update_fields(json);
         },
 
