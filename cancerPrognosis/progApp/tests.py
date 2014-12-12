@@ -3,6 +3,7 @@ from django.test import TestCase
 # Create your tests here.
 from views import *
 
+'''
 gm = Gender()
 gm.name = 'Male'
 gm.save()
@@ -60,7 +61,6 @@ print '1'
 survive = [9024/10,8851/10,7761/10,5945/10,4229/10,151449/10]
 putData('Breast', 60, 'Female', 'Breast - Unknown', survive, [[.30,.015],[.33,.015],[.32,.154],[.5,.75]])
 print '2'
-
 survive = [14279/10,11349/10,9331/10,7000/10,5303/10,117661/10]
 putData('Breast', 70, 'Female', 'Breast - Unknown', survive, [[.30,.015],[.33,.015],[.32,.154],[.5,.75]])
 print '3'
@@ -206,3 +206,4 @@ survive = [22002/10,20431/10,15580/10,11958/10,8894/10,386268/10]
 putData('Prostate', 70, 'Male', 'Prostate - Unknown', survive, [[.13,.359],[.13,.359],[.29,.712],[.45,.958]])
 print '2'
 
+'''

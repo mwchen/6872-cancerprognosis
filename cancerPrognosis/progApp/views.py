@@ -212,7 +212,7 @@ def getCancerProg(request):
 				counting_dic[t.name] = {1:.0001, 2:.0001, 3:.0001, 4:.0001, 5:.0001, 0:.0001}
 		
 			for cd in cancerdata:
-				if age == -1 or (cd.age <= (age + 20) and cd.age >= (age -20)):
+				if age == -1 or (cd.age <= (age + 10) and cd.age >= (age -10)):
 					if  gender.name == 'Both' or cd.gender == gender:
 						if cd.stage == stage.name:
 							convertYears(cd.years_lived, counting_dic['total'])
@@ -432,7 +432,7 @@ def pdf(request):
 
 	y = y - 20
 	p.setFont("Helvetica",14)
-	y = post_text(stage.description,p,x,y)
+	y = post_text(cancer.description,p,x,y)
 	p.setFont("Helvetica-Bold",14)
 	p.setFillColor(HexColor(0x193441))
 	p.drawString(x-5, y , 'Stage '+str(data['stage']))
